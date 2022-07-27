@@ -16,7 +16,7 @@ variable "ecs_vpc_subnets_private_ids" {
 
 variable "image" {
   type        = string
-  default     = "hub.docker.com/r/deepfenceio/cloud-connector:latest"
+  default     = "hub.docker.com/r/deepfenceio/cloud-scanner:latest"
   description = "Image of the Deepfence cloud scanner to deploy"
 }
 
@@ -24,13 +24,13 @@ variable "image" {
 
 variable "container_cpu" {
   type        = string
-  description = "Amount of CPU (in CPU units) to reserve for cloud-connector task"
+  description = "Amount of CPU (in CPU units) to reserve for cloud-scanner task"
   default     = "1024"
 }
 
 variable "container_memory" {
   type        = string
-  description = "Amount of memory (in megabytes) to reserve for cloud-connector task"
+  description = "Amount of memory (in megabytes) to reserve for cloud-scanner task"
   default     = "2048"
 }
 
@@ -58,7 +58,7 @@ variable "aws-region" {
 variable "cloudwatch_log_retention" {
   type        = number
   default     = 5
-  description = "Days to keep logs for CloudConnector"
+  description = "Days to keep logs for cloud scanner"
 }
 
 # container variables
