@@ -1,4 +1,4 @@
-# Cloud scanner for AWS by Deepfence
+# Cloud Scanner for AWS by Deepfence
 
 This module deploys Deepfence cloud scanner for AWS by creating underlying resources in AWS.
 
