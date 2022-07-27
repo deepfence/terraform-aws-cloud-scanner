@@ -1,13 +1,13 @@
 # Member accounts access creation
 
-This folder contains steps and files to create a read only role in multiple member accounts. The role created will be used by Cloud compliance scanner to scan member accounts. The access in each member account is created by a management account which has access to assume admin role in all member accounts to create access resources.
+This folder contains steps and files to create a read only role in multiple member accounts. The role created will be used by Deepfence cloud scanner to scan member accounts. The access in each member account is created by a management account which has access to assume admin role in all member accounts to create access resources.
 
 `Jinja2`, `Doit` is used to automate creation of Terraform files. While `Bash script` is used to do end-to-end automation of steps.
 
 The Terraform files created through this automation for each member account includes-
 1. **Provider block** to assume role in member account.
 2. Creation of a role named- **'deepfence-cloud-scanner-mem-acc-read-only-access'**.
-3. Creation of **trust policy** for the role to be assumed by member account where Cloud compliance scanner will be deployed.
+3. Creation of **trust policy** for the role to be assumed by member account where Deepfence cloud scanner will be deployed.
 4. Attachment of **AWS managed policy**- read only access to role.
 
 ## Prerequisites
@@ -37,9 +37,9 @@ Follow below steps to create the access in member account.
    `Alias`- Alias is required for provider block in Terraform. For each member account alias should be unique.<br>
    `region`- Enter region for member account where access needs to be created.<br>
    `member_account_id`- Enter member account id to assume access in member account. This is the member account id where access will be created.<br>
-   `ccs_mem_account_id` - Member account id where cloud compliance resources are deployed. This will be used to set trust policy to access role in member accounts.<br>
+   `ccs_mem_account_id` - Member account id where Deepfence cloud scanner resources are deployed. This will be used to set trust policy to access role in member accounts.<br>
 
-2. Download [this](https://github.com/deepfence/terraform-aws-cloud-compliance/tree/main/examples/organizational/deploy-with-member-account-read-only-access-creation/member-account-access-creation/startup) bash script in the same folder, run it to **automate** the creation of Terraform files, running of Terraform scripts to create access. <br><br>
+2. Download [this](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/organizational/deploy-with-member-account-read-only-access-creation/member-account-access-creation/startup) bash script in the same folder, run it to **automate** the creation of Terraform files, running of Terraform scripts to create access. <br><br>
    ```shell
    chmod +x startup
    ./startup
@@ -47,5 +47,5 @@ Follow below steps to create the access in member account.
 
    Please note you can add more member accounts in **account_details.txt** and rerun bash script to create access for new member accounts. However if you wish to delete role in a member account, you need to manually modify the Terraform script and do an apply. Similarly you need to do a **Terraform destroy** to destroy the roles in all member accounts.
 
-3. Once the access is created you may follow [this](https://github.com/deepfence/terraform-aws-cloud-compliance/tree/main/examples/organizational/deploy-with-member-account-read-only-access-creation) link to deploy Cloud compliance scanner.
+3. Once the access is created you may follow [this](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/organizational/deploy-with-member-account-read-only-access-creation) link to deploy Deepfence cloud scanner.
 

@@ -1,6 +1,6 @@
-# Cloud compliance scanner in AWS<br/>[ Example :: Single-Account ] 
+# Deepfence cloud scanner in AWS<br/>[ Example :: Single-Account ] 
 
-Deploy Cloud compliance scanner for AWS in a single AWS account.<br/>
+Deploy Deepfence cloud scanner for AWS in a single AWS account.<br/>
 All the required resources and workloads will be run under the same account.
 
 ### Notice
@@ -15,8 +15,8 @@ provider "aws" {
   region = "<AWS-REGION>; eg. us-east-1"
 }
 
-module "cloud-compliance_example_single-account" {
-  source  = "deepfence/cloud-compliance/aws//examples/single-account-ecs"
+module "deepfence-cloud-scanner_example_single-account" {
+  source  = "deepfence/cloud-scanner/aws/examples/single-account-ecs"
   version = "0.1.0"
   mode                          = "<Mode type> eg. service"
   mgmt-console-url              = "<Console URL> eg. XXX.XXX.XX.XXX"

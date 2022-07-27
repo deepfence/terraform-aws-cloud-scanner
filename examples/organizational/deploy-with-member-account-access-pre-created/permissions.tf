@@ -1,4 +1,4 @@
-# creates a role in member account where cloud compliance resources will be deployed
+# creates a role in member account where Deepfence cloud scanner resources will be deployed
 
 resource "aws_iam_role" "ccs_ecs_task_role" {
   provider           = aws.member
@@ -9,7 +9,7 @@ resource "aws_iam_role" "ccs_ecs_task_role" {
 }
 
 # allows ecs task to assume role created in member account where
-# cloud compliance resources will be deployed
+# Deepfence cloud scanner resources will be deployed
 
 data "aws_iam_policy_document" "task_assume_role" {
   provider = aws.member

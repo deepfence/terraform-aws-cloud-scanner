@@ -3,11 +3,11 @@
 # run jinja template to create terraform files,
 # run the terraform files to create the required access in member accounts
 #!/bin/bash
-git clone https://github.com/deepfence/terraform-aws-cloud-compliance.git
-cd terraform-aws-cloud-compliance/examples/organizational/deploy-with-member-account-read-only-access-creation/member-account-access-creation/
+git clone https://github.com/deepfence/terraform-aws-cloud-scanner.git
+cd terraform-aws-cloud-scanner/examples/organizational/deploy-with-member-account-read-only-access-creation/member-account-access-creation/
 mv * ../../../../../
 cd ../../../../../
-rm -rf terraform-aws-cloud-compliance
+rm -rf terraform-aws-cloud-scanner
 echo "" >> dodo.py
 cat account_details.txt >> dodo.py
 pip install -r requirements.txt

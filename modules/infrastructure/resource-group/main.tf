@@ -1,6 +1,6 @@
 # creates resource group
 
-resource "aws_resourcegroups_group" "cloud_compliance_scanner" {
+resource "aws_resourcegroups_group" "deepfence_cloud_scanner" {
 
   name = "${var.name}-resource-group"
   tags = var.tags

@@ -1,6 +1,6 @@
-# AWS Organizational Cloud compliance scanner Role 
+# AWS Organizational Deepfence cloud scanner Role 
 
-The aim of this module is to manage the organizational **managed account** required role and permissions for Cloud compliance scanner to work properly.
+The aim of this module is to manage the organizational **managed account** required role and permissions for Deepfence cloud scanner to work properly.
 
 1. Role- `deepfence-cloud-scanner-mgmt-acc-role` will be created` (by default) in the organizational **managed account** with read only access to resources in managed account and admin access to member accounts.
 

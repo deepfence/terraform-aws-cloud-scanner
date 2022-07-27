@@ -1,13 +1,13 @@
-# Cloud compliance scanner in AWS<br/>[ Example :: Organizational account setup ] - Deploy with member account read write access creation.
+# Deepfence cloud scanner in AWS<br/>[ Example :: Organizational account setup ] - Deploy with member account read write access creation.
 
-Deploy Cloud compliance scanner for AWS in a Organizational setup with management and member account.<br/>
+Deploy Deepfence cloud scanner for AWS in a Organizational setup with management and member account.<br/>
 
 * In the **management account**
     * A role `deepfence-cloud-scanner-mgmt-acc-role` will be created
         * to be able to assumeRole and scan all member accounts.
         
 * In the **user-provided member account**
-    * All the Deepfence cloud compliance scanner service-related resources/workload will be created
+    * All the Deepfence cloud scanner service-related resources/workload will be created
 
 * In the **other member accounts**
     * A role will be assumed by `deepfence-cloud-scanner-mgmt-acc-role` in management account to scan resource in member account. 
@@ -24,16 +24,16 @@ Minimum requirements:
         * [Organizational CloudFormation StackSets](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacksets-orgs-enable-trusted-access.html)
 2. Configure [Terraform **AWS** Provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs) for the `management` account of the organization
 
-3. Organizational Multi-Account Setup, a specific role is required, to enable Cloud compliance scanner to impersonate on organization member-accounts and provide
+3. Organizational Multi-Account Setup, a specific role is required, to enable Deepfence cloud scanner to impersonate on organization member-accounts and provide
 
    * The ability to scan the resources in member account.
    * By default, it uses [AWS created default role `OrganizationAccountAccessRole`](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html)
-     * When an account is created within an organization, AWS will create an `OrganizationAccountAccessRole` [for account management](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html), which Cloud compliance scanner will use for scanning resources in member account.
+     * When an account is created within an organization, AWS will create an `OrganizationAccountAccessRole` [for account management](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html), which Deepfence cloud scanner will use for scanning resources in member account.
      * However, when the account is invited into the organization, it's required to [create the role manually](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html#orgs_manage_accounts_create-cross-account-role)
        > You have to do this manually, as shown in the following procedure. This essentially duplicates the role automatically set up for created accounts. We recommend that you use the same name, OrganizationAccountAccessRole, for your manually created roles for consistency and ease of remembering.
      * If role name, `OrganizationAccountAccessRole` wants to be modified, it must be done both on the `aws` member-account provider AND input value `organizational_member_default_admin_role`
 
-5. Provide a member **account ID for Cloud compliance scanner workload** to be deployed.
+5. Provide a member **account ID for Deepfence cloud scanner workload** to be deployed.
    Our recommendation is for this account to be empty, so that deployed resources are not mixed up with your workload.
    This input must be provided as terraform required input value
     ```
@@ -47,7 +47,7 @@ Role usage for this example comes as follows.
 - **management account**
     - terraform aws provider: default
     - `deepfence-cloud-scanner-mgmt-acc-role` will be created
-        - used by Cloud compliance scanner to `assumeRole` on `OrganizationAccountAccessRole` to be able to scan resources in member accounts.
+        - used by Deepfence cloud scanner to `assumeRole` on `OrganizationAccountAccessRole` to be able to scan resources in member accounts.
 
 - **member accounts**
     - terraform aws provider: 'member' aliased
@@ -55,9 +55,9 @@ Role usage for this example comes as follows.
     - by default, we suggest using an assumeRole to the [AWS created default role `OrganizationAccountAccessRole`](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html)
         - if this role does not exist provide input var `organizational_member_default_admin_role` with the role
 
-- **Cloud compliance scanner workload member account**
+- **Deepfence cloud scanner workload member account**
     - A role `deepfence-cloud-scanner-organizational-ECSTaskRole` will be used to define its permissions
-        - used by Cloud compliance scanner to assumeRole on management account `deepfence-cloud-scanner_mgmt-acc-role` and other organizations `OrganizationAccountAccessRole`
+        - used by Deepfence cloud scanner to assumeRole on management account `deepfence-cloud-scanner_mgmt-acc-role` and other organizations `OrganizationAccountAccessRole`
 
 ## Usage
 Copy the code below and paste it into a .tf file on your local machine.
@@ -78,13 +78,13 @@ provider "aws" {
   }
 }
 
-module "cloud-compliance_example_organizational" {
+module "deepfence-cloud-scanner_example_organizational" {
   providers = {
     aws.member = aws.member
   }
-  source  = "deepfence/cloud-compliance/aws//examples/organizational"
+  source  = "deepfence/cloud-scanner/aws/examples/organizational"
   version = "0.1.0"
-  CCS_member_account_id         = "<Member Account ID where Cloud compliance scanner resources will be deployed> eg. XXXXXXXXXXXX"
+  CCS_member_account_id         = "<Member Account ID where Deepfence cloud scanner resources will be deployed> eg. XXXXXXXXXXXX"
   mode                          = "<Mode type> eg. service"
   mgmt-console-url              = "<Console URL> eg. XXX.XXX.XX.XXX"
   mgmt-console-port             = "<Console port> eg. 443"

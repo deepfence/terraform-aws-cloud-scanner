@@ -1,14 +1,14 @@
-# Cloud compliance scanner in AWS<br/>[ Example :: Organizational account setup ] - Deploy with member account access pre-created.
+# Deepfence cloud scanner in AWS<br/>[ Example :: Organizational account setup ] - Deploy with member account access pre-created.
 
-Deploy Cloud compliance scanner for AWS in a Organizational setup. This approach assumes that user already has a read only role created in all member accounts where scanning needs to be done. This role will be assumed by Cloud compliance scannner to perform scan.<br/>
+Deploy Deepfence cloud scanner for AWS in a Organizational setup. This approach assumes that user already has a read only role created in all member accounts where scanning needs to be done. This role will be assumed by Deepfence cloud scanner to perform scan.<br/>
 
 ## Prerequisites
 
-There should be a read only access role in each of the member account before running this module. The name of the role should be same in all accounts which will be passed as input in this module. This role must have trust policy to be assumed by role named `deepfence-cloud-scanner-organizational-ECSTaskRole` in member account where cloud compliance stack will be deployed. Also the account where cloud compliance stack will be deployed must have policy to assume role in all accounts.
+There should be a read only access role in each of the member account before running this module. The name of the role should be same in all accounts which will be passed as input in this module. This role must have trust policy to be assumed by role named `deepfence-cloud-scanner-organizational-ECSTaskRole` in member account where Deepfence cloud scanner stack will be deployed. Also, the account where Deepfence cloud scanner stack will be deployed must have policy to assume role in all accounts.
 
 Setup is as follows-
 * In the **user-provided member account**
-    * All the Deepfence cloud compliance scanner service-related resources/workload will be created
+    * All the Deepfence cloud scanner service-related resources/workload will be created
 
 * In the **other member accounts**
     * The read only role created by user will be assumed to perform scan.
@@ -31,13 +31,13 @@ provider "aws" {
   }
 }
 
-module "cloud-compliance_example_organizational" {
+module "deepfence-cloud-scanner_example_organizational" {
   providers = {
     aws.member = aws.member
   }
-  source  = "deepfence/cloud-compliance/aws//examples/organizational"
+  source  = "deepfence/cloud-scanner/aws/examples/organizational"
   version = "0.1.0"
-  CCS_member_account_id                    = "<Member Account ID where Cloud compliance scanner resources will be deployed> ex. XXXXXXXXXXXX"
+  CCS_member_account_id                    = "<Member Account ID where Deepfence cloud scanner resources will be deployed> ex. XXXXXXXXXXXX"
   common_role_in_all_account_to_be_scanned = "<Role name> ex. read_only_role"
   mode                                     = "<Mode type> ex. service"
   mgmt-console-url                         = "<Console URL> ex. XXX.XXX.XX.XXX"

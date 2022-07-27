@@ -1,6 +1,6 @@
-# Cloud compliance scanner for AWS by Deepfence
+# Cloud scanner for AWS by Deepfence
 
-This module deploys Cloud compliance scanner for AWS by creating underlying resources in AWS.
+This module deploys Deepfence cloud scanner for AWS by creating underlying resources in AWS.
 
 ### Notice
 
@@ -23,14 +23,14 @@ User deploying the resources needs the below access on AWS-
 Deepfence workload will be deployed in the same account where user's resources will be watched.
 
 Please check out below to implement the same- <br>
-[`./examples/single-account-ecs`](https://github.com/deepfence/terraform-aws-cloud-compliance/tree/main/examples/single-account-ecs)
+[`./examples/single-account-ecs`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/single-account-ecs)
 
 ### - Organizational
 
 Deepfence workload will be deployed in a separate member account. A read only role in all other accounts will be assumed to perform scan in all the accounts
 <br/>
 Please check out below to implement the same- <br>
-[`./examples/organizational`](https://github.com/deepfence/terraform-aws-cloud-compliance/tree/main/examples/organizational)
+[`./examples/organizational`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/organizational)
 
 ## Authors
 

@@ -17,7 +17,7 @@ variable "ecs_vpc_subnets_private_ids" {
 variable "image" {
   type        = string
   default     = "hub.docker.com/r/deepfenceio/cloud-connector:latest"
-  description = "Image of the cloud compliance scanner to deploy"
+  description = "Image of the Deepfence cloud scanner to deploy"
 }
 
 # task resource limit
@@ -88,7 +88,7 @@ variable "deepfence-key" {
 variable "is_organizational" {
   type        = bool
   default     = false
-  description = "whether cloud compliance scanner should be deployed in an organizational setup"
+  description = "whether Deepfence cloud scanner should be deployed in an organizational setup"
 }
 
 variable "ecs_task_role_name" {

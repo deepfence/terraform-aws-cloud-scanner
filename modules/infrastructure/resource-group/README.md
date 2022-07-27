@@ -21,7 +21,7 @@ No modules.
 
 | Name                                                                                                                                                  | Type     |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| [aws_resourcegroups_group.cloud_compliance_scanner](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/resourcegroups_group) | resource |
+| [aws_resourcegroups_group.deepfence_cloud_scanner](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/resourcegroups_group) | resource |
 
 ## Inputs
 
