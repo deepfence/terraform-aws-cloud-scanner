@@ -17,6 +17,7 @@ module "vpc-ecs" {
   source             = "../../modules/infrastructure/vpc-ecs"
   ecs_vpc_region_azs = var.ecs_vpc_region_azs
   tags               = var.tags
+  name               = var.name
 }
 
 # module creates ecs service with container
@@ -31,6 +32,7 @@ module "ecs-service" {
   mgmt-console-url              = var.mgmt-console-url 
   mgmt-console-port             = var.mgmt-console-port
   deepfence-key                 = var.deepfence-key
+  name                          = var.name
 }
 
 
