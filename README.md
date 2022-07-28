@@ -30,7 +30,7 @@ Please check out below to implement the same- <br>
 Deepfence workload will be deployed in a separate member account. A read only role in all other accounts will be assumed to perform scan in all the accounts
 <br/>
 Please check out below to implement the same- <br>
-[`./examples/organizational`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/organizational)
+[`./examples/organizational`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/)
 
 ## Authors
 
