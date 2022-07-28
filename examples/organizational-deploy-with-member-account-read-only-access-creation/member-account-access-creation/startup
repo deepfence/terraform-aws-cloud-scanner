@@ -5,8 +5,8 @@
 #!/bin/bash
 git clone https://github.com/deepfence/terraform-aws-cloud-scanner.git
 cd terraform-aws-cloud-scanner/examples/organizational/deploy-with-member-account-read-only-access-creation/member-account-access-creation/
-mv * ../../../../../
-cd ../../../../../
+mv * ../../../../
+cd ../../../../
 rm -rf terraform-aws-cloud-scanner
 echo "" >> dodo.py
 cat account_details.txt >> dodo.py
