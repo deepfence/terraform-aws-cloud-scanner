@@ -4,7 +4,7 @@ module "resource_group" {
   providers = {
     aws = aws.member
   }
-  source = "../../../modules/infrastructure/resource-group"
+  source = "../../modules/infrastructure/resource-group"
   name   = var.name
   tags   = var.tags
 }
@@ -16,7 +16,7 @@ module "vpc-ecs" {
     aws = aws.member
   }
 
-  source             = "../../../modules/infrastructure/vpc-ecs"
+  source             = "../../modules/infrastructure/vpc-ecs"
   ecs_vpc_region_azs = var.ecs_vpc_region_azs
   name               = var.name
   tags               = var.tags
@@ -33,7 +33,7 @@ module "ecs-service" {
     mem_acc_ecs_task_role_name      = aws_iam_role.ccs_ecs_task_role.name
   }
 
-  source                      = "../../../modules/services/ecs-service"
+  source                      = "../../modules/services/ecs-service"
   aws-region                  = var.region
   ecs_vpc_subnets_private_ids = module.vpc-ecs.ecs_vpc_subnets_private_ids
   ecs_cluster_name            = "${var.name}-ecs-cluster"
