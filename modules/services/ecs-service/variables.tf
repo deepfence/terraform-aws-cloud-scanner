@@ -16,7 +16,7 @@ variable "ecs_vpc_subnets_private_ids" {
 
 variable "image" {
   type        = string
-  default     = "hub.docker.com/r/deepfenceio/cloud-scanner:latest"
+  default     = "deepfenceio/cloud-scanner:latest"
   description = "Image of the Deepfence cloud scanner to deploy"
 }
 
