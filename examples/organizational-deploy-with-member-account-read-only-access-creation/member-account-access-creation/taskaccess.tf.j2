@@ -4,7 +4,7 @@ provider "aws" {
   alias = "{{item["alias"]}}"
   region = "{{item["region"]}}"
   assume_role {
-    role_arn = "arn:aws:iam::{{item["member_account_id"]}}:role/OrganizationAccountAccessRole"
+    role_arn = "arn:aws:iam::{{item["ccs_mem_account_id"]}}:role/OrganizationAccountAccessRole"
   }
 }
 
