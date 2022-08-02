@@ -1,14 +1,16 @@
 # Member accounts access creation
 
-This folder contains steps and files to create a read only role in multiple member accounts. The role created will be used by Deepfence cloud scanner to scan member accounts. The access in each member account is created by a management account which has access to assume admin role in all member accounts to create access resources.
+This folder contains steps and files to create a read only role in multiple member accounts and a task role for ECS in a single member account. The read only role created will be used by Deepfence cloud scanner to scan member accounts and ECS task role will be mapped to these roles. The access in each member account is created by a management account which has access to assume admin role in all member accounts to create access resources.
 
 `Jinja2`, `Doit` is used to automate creation of Terraform files. While `Bash script` is used to do end-to-end automation of steps.
 
 The Terraform files created through this automation for each member account includes-
 1. **Provider block** to assume role in member account.
 2. Creation of a role named- **'deepfence-cloud-scanner-mem-acc-read-only-access'**.
-3. Creation of **trust policy** for the role to be assumed by member account where Deepfence cloud scanner will be deployed.
-4. Attachment of **AWS managed policy**- read only access to role.
+3. Creation of a role named- **'deepfence-cloud-scanner-organizational-ECSTaskRole'**.
+4. Creation of **trust policy** for the read only role to be assumed by member account where Deepfence cloud scanner will be deployed.
+5. Attachment of **AWS managed policy**- read only access to role.
+6. Creation of **assume policy** for ECS task role to assume read only roles in all accounts and **trust policy** for role to be assumed by ECS task. 
 
 ## Prerequisites
 
@@ -29,23 +31,35 @@ Follow below steps to create the access in member account.
 
 1. Create a folder in your local system. Create a file - account_details.txt and add the required data in below format and save it. Mentioned below is sample data. <br><br>
    ```
-   account_details = [
+   account_details_block_A = [
     {'alias': 'MEMBER1', 'region': 'us-east-1', 'member_account_id': '000000000000', 'ccs_mem_account_id': '000000000000'},
     {'alias': 'MEMBER2', 'region': 'us-east-2', 'member_account_id': '000000000000', 'ccs_mem_account_id': '000000000000'}]
-    ```
 
+   account_details_block_B = [
+    {'alias': 'MEMBER3', 'region': 'us-east-1', 'ccs_mem_account_id': '000000000000'}]
+
+    ```
+   
+   **account_details_block_A** <br>
+   This data block should have details for member id accounts where read only access needs to be created.<br>
    `Alias`- Alias is required for provider block in Terraform. For each member account alias should be unique.<br>
    `region`- Enter region for member account where access needs to be created.<br>
    `member_account_id`- Enter member account id to assume access in member account. This is the member account id where access will be created.<br>
    `ccs_mem_account_id` - Member account id where Deepfence cloud scanner resources are deployed. This will be used to set trust policy to access role in member accounts.<br>
 
-2. Download [this](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/organizational/deploy-with-member-account-read-only-access-creation/member-account-access-creation/startup) bash script in the same folder, run it to **automate** the creation of Terraform files, running of Terraform scripts to create access. <br><br>
+   **account_details_block_B** <br>
+   This data block should have details for member id account where Deepfence cloud scanner will be deployed with ecs task.<br>
+    `Alias`- Alias is required for provider block in Terraform. <br>
+   `region`- Enter region for member account where access needs to be created.<br>
+   `ccs_mem_account_id`- Enter member account id to assume access in member account. This is the member account id where access will be created for ecs task.<br>
+
+2. Download [this](https://github.com/deepfence/terraform-aws-cloud-scanner/blob/main/examples/organizational-deploy-with-member-account-read-only-access-creation/member-account-access-creation/startup) bash script in the same folder, run it to **automate** the creation of Terraform files, running of Terraform scripts to create access. <br><br>
    ```shell
-   chmod +x startup
-   ./startup
+   chmod +x startup.sh
+   ./startup.sh
    ```
 
-   Please note you can add more member accounts in **account_details.txt** and rerun bash script to create access for new member accounts. However if you wish to delete role in a member account, you need to manually modify the Terraform script and do an apply. Similarly you need to do a **Terraform destroy** to destroy the roles in all member accounts.
+   Please note you can add more member accounts under **account_details_1** in **account_details.txt** and rerun bash script to create access for new member accounts. However if you wish to delete role in a member account, you need to manually modify the Terraform script and do an apply. Similarly you need to do a **Terraform destroy** to destroy the roles in all member accounts.
 
-3. Once the access is created you may follow [this](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/organizational/organizational-deploy-with-member-account-read-only-access-creation) link to deploy Deepfence cloud scanner.
+3. Once the access is created you may follow [this](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/organizational-deploy-with-member-account-read-only-access-creation) link to deploy Deepfence cloud scanner.
 

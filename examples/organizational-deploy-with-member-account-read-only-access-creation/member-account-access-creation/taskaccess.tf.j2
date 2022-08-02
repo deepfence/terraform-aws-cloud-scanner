@@ -1,18 +1,23 @@
-# creates a role in member account where Deepfence cloud scanner resources will be deployed
+{% for item in data_B %}
+
+provider "aws" {
+  alias = "{{item["alias"]}}"
+  region = "{{item["region"]}}"
+  assume_role {
+    role_arn = "arn:aws:iam::{{item["member_account_id"]}}:role/OrganizationAccountAccessRole"
+  }
+}
 
 resource "aws_iam_role" "ccs_ecs_task_role" {
-  provider           = aws.member
-  name               = "${var.name}-${var.ccs_ecs_task_role_name}"
+  provider           = aws.{{item["alias"]}}
+  name               = "${var.name}-organizational-ECSTaskRole"
   assume_role_policy = data.aws_iam_policy_document.task_assume_role.json
   path               = "/"
   tags               = var.tags
 }
 
-# allows ecs task to assume role created in member account where
-# Deepfence cloud scanner resources will be deployed
-
 data "aws_iam_policy_document" "task_assume_role" {
-  provider = aws.member
+  provider = aws.{{item["alias"]}}
   statement {
     effect = "Allow"
     principals {
@@ -22,9 +27,9 @@ data "aws_iam_policy_document" "task_assume_role" {
     actions = ["sts:AssumeRole"]
   }
 }
-
+     
 data "aws_iam_policy_document" "mem_acc_assume_role" {
-  provider = aws.member
+  provider = aws.{{item["alias"]}}
   statement {
     effect = "Allow"
     actions = [
@@ -37,8 +42,10 @@ data "aws_iam_policy_document" "mem_acc_assume_role" {
 }
 
 resource "aws_iam_role_policy" "mem_acc_assume_role" {
-  provider = aws.member
+  provider = aws.{{item["alias"]}}
   name     = "${var.name}-AllowAssumeRoleInChildAccounts"
   role     = aws_iam_role.ccs_ecs_task_role.id
   policy   = data.aws_iam_policy_document.mem_acc_assume_role.json
 }
+
+{% endfor %}

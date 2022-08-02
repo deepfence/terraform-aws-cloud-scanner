@@ -4,7 +4,7 @@
 # run the terraform files to create the required access in member accounts
 #!/bin/bash
 git clone https://github.com/deepfence/terraform-aws-cloud-scanner.git
-cd terraform-aws-cloud-scanner/examples/organizational/deploy-with-member-account-read-only-access-creation/member-account-access-creation/
+cd terraform-aws-cloud-scanner/examples/organizational-deploy-with-member-account-read-only-access-creation/member-account-access-creation/
 mv * ../../../../
 cd ../../../../
 rm -rf terraform-aws-cloud-scanner

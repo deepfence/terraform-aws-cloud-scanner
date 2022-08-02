@@ -22,6 +22,7 @@ module "deepfence-cloud-scanner_example_single-account" {
   mgmt-console-url              = "<Console URL> eg. XXX.XXX.XX.XXX"
   mgmt-console-port             = "<Console port> eg. 443"
   deepfence-key                 = "<Deepfence-key> eg. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+  
 }
 ```
 To run this example you need have your [aws account profile configured in CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) and to execute:
