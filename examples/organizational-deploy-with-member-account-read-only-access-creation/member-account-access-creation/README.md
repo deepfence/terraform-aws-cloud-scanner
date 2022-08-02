@@ -61,5 +61,5 @@ Follow below steps to create the access in member account.
 
    Please note you can add more member accounts under **account_details_1** in **account_details.txt** and rerun bash script to create access for new member accounts. However if you wish to delete role in a member account, you need to manually modify the Terraform script and do an apply. Similarly you need to do a **Terraform destroy** to destroy the roles in all member accounts.
 
-3. Once the access is created you may follow [this](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/organizational-deploy-with-member-account-read-only-access-creation) link to deploy Deepfence cloud scanner.
+3. Once the access is created you may follow [this](https://registry.terraform.io/modules/deepfence/cloud-scanner/aws/0.1.2/examples/organizational-deploy-with-member-account-read-only-access-creation) link to deploy Deepfence cloud scanner.
 

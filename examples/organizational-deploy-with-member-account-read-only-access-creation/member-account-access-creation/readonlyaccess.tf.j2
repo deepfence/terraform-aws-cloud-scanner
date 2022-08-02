@@ -8,7 +8,7 @@ provider "aws" {
 }
 {% endfor %}
 
-{% for item in data %}
+{% for item in data_A %}
 
 data "aws_iam_policy" "managed_policy_{{item["alias"]}}" {
   provider = aws.{{item["alias"]}}

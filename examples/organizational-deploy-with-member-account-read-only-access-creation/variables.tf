@@ -84,7 +84,7 @@ variable "ccs_ecs_task_role_name" {
 variable "role_in_all_account_to_be_scanned" {
   type        = string
   default     = "deepfence-cloud-scanner-mem-acc-read-only-access"
-  description = "Default role created by AWS for management-account users to be able to admin member accounts.<br/>https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html"
+  description = "Role created in each member account for scanning"
 }
 
 variable "CCS_member_account_id" {
