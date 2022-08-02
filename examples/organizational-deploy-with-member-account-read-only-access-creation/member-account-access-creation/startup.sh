@@ -12,6 +12,7 @@ echo "" >> dodo.py
 cat account_details.txt >> dodo.py
 pip install -r requirements.txt
 doit
+rm -rf __pycache__ readonlyaccess.tf.j2 dodo.py requirements.txt taskaccess.tf.j2 
 terraform init 
 terraform plan --out tfplan.binary
 terraform apply tfplan.binary
