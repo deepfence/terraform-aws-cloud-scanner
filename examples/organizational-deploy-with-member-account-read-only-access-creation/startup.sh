@@ -12,4 +12,4 @@ echo "" >> dodo.py
 cat account_details.txt >> dodo.py
 pip install -r requirements.txt
 doit
-rm -rf __pycache__ readonlyaccess.tf.j2 dodo.py requirements.txt taskaccess.tf.j2 .doit.db
+rm -rf __pycache__ dodo.py requirements.txt .doit.db readonlyaccess.tf.j2 README.md
