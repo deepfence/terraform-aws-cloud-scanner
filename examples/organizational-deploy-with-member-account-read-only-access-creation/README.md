@@ -14,16 +14,14 @@ Setup is as follows-
 
 ## Prerequisites
 
-The terraform files created through Jinja template will use a management account to assume role in member account to create access in member accounts.
-
 Minimum requirements:
-1. In each Member account, there should be trust policy for -[`OrganizationAccountAccessRole`](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html) role to be accessed by management account. Also, assume policy should be there in management account to assume role in member accounts.
+1. Management account will be used to assume access in required member account for access creation and scanner deployment in container. In each Member account, there should be trust policy for -[`OrganizationAccountAccessRole`](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html) role to be accessed by management account. Also, assume policy should be there in management account to assume role in member accounts.
 
      * When a member account is created within an organization, AWS will create an `OrganizationAccountAccessRole` [for account management](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html) in member account. 
      * However, when the account is invited into the organization, it's required to [create the role manually](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html#orgs_manage_accounts_create-cross-account-role)
        > You have to do this manually, as shown in the following procedure. This essentially duplicates the role automatically set up for created accounts. We recommend that you use the same name, OrganizationAccountAccessRole, for your manually created roles as same will be mentioned in terraform script generated through Jinja template.
 
-2. [Pip](https://pip.pypa.io/en/stable/installation/) package installer needs to be installed.
+2. [Pip](https://pip.pypa.io/en/stable/installation/) package installer needs to be installed for installing required dependencies.
 
 ## Usage
 

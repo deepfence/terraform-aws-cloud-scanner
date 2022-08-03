@@ -90,7 +90,7 @@ module "deepfence-cloud-scanner_example_organizational" {
   mgmt-console-port             = "<Console port> eg. 443"
   deepfence-key                 = "<Deepfence-key> eg. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
   multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX, XXXXXXXXXXXX, XXXXXXXXXXXX"
-  org-acc-id                    = "<Management account id> ex. XXXXXXXXXXXX"
+  org-acc-id                    = "<Management account id available in organization setup> ex. XXXXXXXXXXXX"
 }
 
 ```
