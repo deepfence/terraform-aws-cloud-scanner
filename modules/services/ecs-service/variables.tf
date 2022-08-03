@@ -83,6 +83,16 @@ variable "deepfence-key" {
   description = "deepfence-key"
 }
 
+variable "multiple-acc-ids" {
+  type        = string
+  description = "These account ids are those where scanning will be done"
+}
+
+variable "org-acc-id" {
+  type        = string
+  description = "This account id is the management account id which is there in an organizational setup"
+}
+
 # organisational setup
 
 variable "is_organizational" {
