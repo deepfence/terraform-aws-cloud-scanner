@@ -66,6 +66,8 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
   mgmt-console-url              = "XXX.XXX.XX.XXX"
   mgmt-console-port             = "443"
   deepfence-key                 = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+  multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX, XXXXXXXXXXXX, XXXXXXXXXXXX"
+  org-acc-id                    = "<Management account id> ex. XXXXXXXXXXXX"
 }
 ```
 3. Download [this](https://github.com/deepfence/terraform-aws-cloud-scanner/blob/aws-alt-fix-cyclic-dep/examples/organizational-deploy-with-member-account-read-only-access-creation/startup.sh) bash script in the same folder, run it to **automate** the creation of Terraform files to create read only role in each member account. <br><br>
