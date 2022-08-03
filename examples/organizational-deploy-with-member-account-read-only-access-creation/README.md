@@ -1,115 +1,89 @@
-# Deepfence cloud scanner in AWS<br/>[ Example :: Organizational account setup ] - Deploy with member account read write access creation.
+# Deepfence cloud scanner in AWS<br/>[ Example :: Organizational account setup ] - Deploy with member-account read-only access creation.
 
-Deploy Deepfence cloud scanner for AWS in a Organizational setup with management and member account.<br/>
+Deploy Deepfence cloud scanner for AWS in a Organizational setup. This approach involves deploying Deepfence cloud scanner in a single member account and creating a read only access role in all other member accounts for scanning. Jinja template, doit and bash script is used to automate creation of Terraform files for access creation in all member accounts. <br/>
 
-* In the **management account**
-    * A role `deepfence-cloud-scanner-mgmt-acc-role` will be created
-        * to be able to assumeRole and scan all member accounts.
-        
+Setup is as follows-
 * In the **user-provided member account**
-    * All the Deepfence cloud scanner service-related resources/workload will be created
+    * All the Deepfence cloud scanner service related resources/workload will be created
 
 * In the **other member accounts**
-    * A role will be assumed by `deepfence-cloud-scanner-mgmt-acc-role` in management account to scan resource in member account. 
-
+    * A role will be created which will be assumed to perform scan.
+     
 ### Notice
 **Deployment cost** - This example will create resources that cost money.<br/>Run `terraform destroy` when you don't need them anymore
 
 ## Prerequisites
 
+The terraform files created through Jinja template will use a management account to assume role in member account to create access in member accounts.
+
 Minimum requirements:
+1. In each Member account, there should be trust policy for -[`OrganizationAccountAccessRole`](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html) role to be accessed by management account. Also, assume policy should be there in management account to assume role in member accounts.
 
-1. Have an existing AWS account as the organization management account
-    *  Within the Organization, following services must be enabled (Organization > Services)
-        * [Organizational CloudFormation StackSets](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacksets-orgs-enable-trusted-access.html)
-2. Configure [Terraform **AWS** Provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs) for the `management` account of the organization
-
-3. Organizational Multi-Account Setup, a specific role is required, to enable Deepfence cloud scanner to impersonate on organization member-accounts and provide
-
-   * The ability to scan the resources in member account.
-   * By default, it uses [AWS created default role `OrganizationAccountAccessRole`](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html)
-     * When an account is created within an organization, AWS will create an `OrganizationAccountAccessRole` [for account management](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html), which Deepfence cloud scanner will use for scanning resources in member account.
+     * When a member account is created within an organization, AWS will create an `OrganizationAccountAccessRole` [for account management](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html) in member account. 
      * However, when the account is invited into the organization, it's required to [create the role manually](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html#orgs_manage_accounts_create-cross-account-role)
-       > You have to do this manually, as shown in the following procedure. This essentially duplicates the role automatically set up for created accounts. We recommend that you use the same name, OrganizationAccountAccessRole, for your manually created roles for consistency and ease of remembering.
-     * If role name, `OrganizationAccountAccessRole` wants to be modified, it must be done both on the `aws` member-account provider AND input value `organizational_member_default_admin_role`
+       > You have to do this manually, as shown in the following procedure. This essentially duplicates the role automatically set up for created accounts. We recommend that you use the same name, OrganizationAccountAccessRole, for your manually created roles as same will be mentioned in terraform script generated through Jinja template.
 
-5. Provide a member **account ID for Deepfence cloud scanner workload** to be deployed.
-   Our recommendation is for this account to be empty, so that deployed resources are not mixed up with your workload.
-   This input must be provided as terraform required input value
-    ```
-    CCS_member_account_id=<Member account id where scanner will be deployed in ECS>
-    ```
-
-## Role Summary
-
-Role usage for this example comes as follows. 
-
-- **management account**
-    - terraform aws provider: default
-    - `deepfence-cloud-scanner-mgmt-acc-role` will be created
-        - used by Deepfence cloud scanner to `assumeRole` on `OrganizationAccountAccessRole` to be able to scan resources in member accounts.
-
-- **member accounts**
-    - terraform aws provider: 'member' aliased
-        - this provider can be configured as desired, we just provide a default option
-    - by default, we suggest using an assumeRole to the [AWS created default role `OrganizationAccountAccessRole`](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html)
-        - if this role does not exist provide input var `organizational_member_default_admin_role` with the role
-
-- **Deepfence cloud scanner workload member account**
-    - A role `deepfence-cloud-scanner-organizational-ECSTaskRole` will be used to define its permissions
-        - used by Deepfence cloud scanner to assumeRole on management account `deepfence-cloud-scanner_mgmt-acc-role` and other organizations `OrganizationAccountAccessRole`
+2. [Pip](https://pip.pypa.io/en/stable/installation/) package installer needs to be installed.
 
 ## Usage
-Copy the code below and paste it into a .tf file on your local machine.
+
+1. Create a folder in your local system. Create a file - account_details.txt and add the required data in below format and save it. Mentioned below is sample data. This file will be used to create read only role in each member account mentioned as `member_account_id` <br><br>
+   ```
+   account_details = [
+    {'alias': 'MEMBER1', 'region': 'us-east-1', 'member_account_id': '000000000000', 'ccs_mem_account_id': '000000000000'},
+    {'alias': 'MEMBER2', 'region': 'us-east-2', 'member_account_id': '000000000000', 'ccs_mem_account_id': '000000000000'}]
+    ```
+
+   `Alias`- Alias is required for provider block in Terraform. For each member account alias should be unique.<br>
+   `region`- Enter region for member account where access needs to be created.<br>
+   `member_account_id`- Enter member account id to assume access in member account. This is the member account id where access will be created.<br>
+   `ccs_mem_account_id` - Member account id where Deepfence cloud scanner resources are deployed. This will be used to set trust policy to access role in member accounts.<br>
+
+2. Copy the snippet below and paste it into a main.tf file in same folder on your local machine, fill in the required details to import registry module to deploy scanner in a single member account.
 
 ```terraform
 
-provider "aws" {
-  region = "<AWS-REGION>; eg. us-east-1"
+locals{
+  CCS_member_account_id="<Member Account ID where Deepfence cloud scanner resources will be deployed> eg. XXXXXXXXXXXX"
 }
 
 provider "aws" {
   alias  = "member"
-  region = "<AWS_REGION>; ex. us-east-1"
+  region = "us-east-1"
   assume_role {
     # 'OrganizationAccountAccessRole' is the default role created by AWS for managed-account users to be able to admin member accounts.
     # <br/>https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html
-    role_arn = "arn:aws:iam::${var.CCS_member_account_id}:role/OrganizationAccountAccessRole"
+    role_arn = "arn:aws:iam::${local.CCS_member_account_id}:role/OrganizationAccountAccessRole"
   }
 }
 
-module "deepfence-cloud-scanner_example_organizational" {
+module "cloud-scanner_example_organizational-deploy-with-member-account-read-only-access-creation" {
   providers = {
     aws.member = aws.member
   }
-  source  = "deepfence/cloud-scanner/aws/examples/organizational"
-  version = "0.1.0"
-  CCS_member_account_id         = "<Member Account ID where Deepfence cloud scanner resources will be deployed> eg. XXXXXXXXXXXX"
-  mode                          = "<Mode type> eg. service"
-  mgmt-console-url              = "<Console URL> eg. XXX.XXX.XX.XXX"
-  mgmt-console-port             = "<Console port> eg. 443"
-  deepfence-key                 = "<Deepfence-key> eg. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-  multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX, XXXXXXXXXXXX, XXXXXXXXXXXX"
-  org-acc-id                    = "<Management account id> ex. XXXXXXXXXXXX"
+  source                        = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-read-only-access-creation"
+  version                       = "0.1.2"
+  CCS_member_account_id         = "${local.CCS_member_account_id}"
+  mode                          = "service"
+  mgmt-console-url              = "XXX.XXX.XX.XXX"
+  mgmt-console-port             = "443"
+  deepfence-key                 = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
 }
-
 ```
+3. Download [this]() bash script in the same folder, run it to **automate** the creation of Terraform files to create read only role in each member account. <br><br>
+   ```shell
+   chmod +x startup
+   ./startup
+   ```
 
-To run this example you need have your [aws management-account profile configured in CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) and to execute:
+   Please note you can add more member accounts in **account_details.txt** and rerun bash script to create access for new member accounts. However if you wish to delete role in a member account, you need to manually modify the Terraform script and do an **Terraform apply**. Similarly you need to do a **Terraform destroy** to destroy the roles in all member accounts.
+
+4. Run Terraform commands to create the resources. To run this example you need have your [aws management-account profile configured in CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) and to execute:
 ```shell
 terraform init
 terraform plan
 terraform apply
 ```
-
-
-
-
-
-
-
-
-
 
 See inputs summary for more optional configuration.
 
@@ -124,16 +98,14 @@ See inputs summary for more optional configuration.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws.member"></a> [aws.member](#provider\_aws.member) | >= 4.0.0 |
+| <a name="provider_aws.member"></a> [aws.member](#provider\_aws.member) | 4.24.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_ecs-service"></a> [ecs-service](#module\_ecs-service) | ../../modules/services/ecs-service | n/a |
-| <a name="module_org-role-ecs"></a> [org-role-ecs](#module\_org-role-ecs) | ../../../modules/infrastructure/permissions/org-role-ecs | n/a |
 | <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | ../../modules/infrastructure/resource-group | n/a |
-| <a name="module_resource_group_secure_for_cloud_member"></a> [resource\_group\_secure\_for\_cloud\_member](#module\_resource\_group\_secure\_for\_cloud\_member) | ../../modules/infrastructure/resource-group | n/a |
 | <a name="module_vpc-ecs"></a> [vpc-ecs](#module\_vpc-ecs) | ../../modules/infrastructure/vpc-ecs | n/a |
 
 ## Resources
@@ -141,6 +113,8 @@ See inputs summary for more optional configuration.
 | Name | Type |
 |------|------|
 | [aws_iam_role.ccs_ecs_task_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy.mem_acc_assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
+| [aws_iam_policy_document.mem_acc_assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.task_assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
@@ -151,17 +125,17 @@ See inputs summary for more optional configuration.
 | <a name="input_ccs_ecs_task_role_name"></a> [ccs\_ecs\_task\_role\_name](#input\_ccs\_ecs\_task\_role\_name) | Name for the ecs task role. This is only required to resolve cyclic dependency with organizational approach | `string` | `"organizational-ECSTaskRole"` | no |
 | <a name="input_deepfence-key"></a> [deepfence-key](#input\_deepfence-key) | deepfence-key | `string` | `""` | no |
 | <a name="input_ecs_vpc_region_azs"></a> [ecs\_vpc\_region\_azs](#input\_ecs\_vpc\_region\_azs) | List of Availability Zones for ECS VPC creation. e.g.: ["apne1-az1", "apne1-az2"]. If defaulted, two of the default 'aws\_availability\_zones' datasource will be taken | `list(string)` | `[]` | no |
+| <a name="input_mem_acc_ecs_task_role_name"></a> [mem\_acc\_ecs\_task\_role\_name](#input\_mem\_acc\_ecs\_task\_role\_name) | Name for the ecs task role. This is only required to resolve cyclic dependency with organizational approach | `string` | `""` | no |
 | <a name="input_mgmt-console-port"></a> [mgmt-console-port](#input\_mgmt-console-port) | mgmt-console-port | `string` | `"443"` | no |
 | <a name="input_mgmt-console-url"></a> [mgmt-console-url](#input\_mgmt-console-url) | mgmt-console-url | `string` | `""` | no |
 | <a name="input_mode"></a> [mode](#input\_mode) | mode | `string` | `"service"` | no |
 | <a name="input_multiple-acc-ids"></a> [multiple-acc-ids](#input\_multiple-acc-ids) | These account ids are those where scanning will be done | `string` | `""` | no |
 | <a name="input_name"></a> [name](#input\_name) | Prefix name for all resources | `string` | `"deepfence-cloud-scanner"` | no |
 | <a name="input_org-acc-id"></a> [org-acc-id](#input\_org-acc-id) | This account id is the management account id which is there in an organizational setup | `string` | `""` | no |
-| <a name="input_organizational_member_default_admin_role"></a> [organizational\_member\_default\_admin\_role](#input\_organizational\_member\_default\_admin\_role) | Default role created by AWS for management-account users to be able to admin member accounts.<br/>https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html | `string` | `"OrganizationAccountAccessRole"` | no |
 | <a name="input_region"></a> [region](#input\_region) | the AWS region in which resources are created, you must set the availability\_zones variable as well if you define this value to something other than the default | `string` | `"us-east-1"` | no |
+| <a name="input_role_in_all_account_to_be_scanned"></a> [role\_in\_all\_account\_to\_be\_scanned](#input\_role\_in\_all\_account\_to\_be\_scanned) | Default role created by AWS for management-account users to be able to admin member accounts.<br/>https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html | `string` | `"deepfence-cloud-scanner-mem-acc-read-only-access"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Default tag for resource | `map(string)` | <pre>{<br>  "product": "deepfence-cloud-scanner"<br>}</pre> | no |
 
 ## Outputs
 
 No outputs.
-
