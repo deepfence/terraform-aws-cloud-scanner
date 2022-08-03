@@ -70,7 +70,7 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
   deepfence-key                 = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
 }
 ```
-3. Download [this]() bash script in the same folder, run it to **automate** the creation of Terraform files to create read only role in each member account. <br><br>
+3. Download [this](https://github.com/deepfence/terraform-aws-cloud-scanner/blob/aws-alt-fix-cyclic-dep/examples/organizational-deploy-with-member-account-read-only-access-creation/startup.sh) bash script in the same folder, run it to **automate** the creation of Terraform files to create read only role in each member account. <br><br>
    ```shell
    chmod +x startup
    ./startup
