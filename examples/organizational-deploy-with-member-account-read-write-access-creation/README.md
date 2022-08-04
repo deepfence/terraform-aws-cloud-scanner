@@ -37,7 +37,7 @@ Minimum requirements:
    Our recommendation is for this account to be empty, so that deployed resources are not mixed up with your workload.
    This input must be provided as terraform required input value
     ```
-    CCS_member_account_id=<ORGANIZATIONAL_SECURE_FOR_CLOUD_ACCOUNT_ID>
+    CCS_member_account_id=<Member account id where scanner will be deployed in ECS>
     ```
 
 ## Role Summary
@@ -89,11 +89,11 @@ module "deepfence-cloud-scanner_example_organizational" {
   mgmt-console-url              = "<Console URL> eg. XXX.XXX.XX.XXX"
   mgmt-console-port             = "<Console port> eg. 443"
   deepfence-key                 = "<Deepfence-key> eg. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+  multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX, XXXXXXXXXXXX, XXXXXXXXXXXX"
+  org-acc-id                    = "<Management account id available in organization setup> ex. XXXXXXXXXXXX"
 }
 
 ```
-
-See [inputs summary](#inputs) or module [`variables.tf`](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/blob/master/examples/organizational/variables.tf) file for more optional configuration.
 
 To run this example you need have your [aws management-account profile configured in CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) and to execute:
 ```shell
@@ -103,52 +103,65 @@ terraform apply
 ```
 
 
+
+
+
+
+
+
+
+
+See inputs summary for more optional configuration.
+
 ## Requirements
 
-| Name                                                                      | Version   |
-|---------------------------------------------------------------------------|-----------|
+| Name | Version |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws)                   | >= 4.0.0  |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0.0 |
 
 ## Providers
 
-| Name                                                                   | Version |
-|------------------------------------------------------------------------|---------|
-| <a name="provider_aws.member"></a> [aws.member](#provider\_aws.member) | 4.17.1  |
+| Name | Version |
+|------|---------|
+| <a name="provider_aws.member"></a> [aws.member](#provider\_aws.member) | >= 4.0.0 |
 
 ## Modules
 
-| Name                                                                                                                                                             | Source                                                | Version |
-|------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|---------|
-| <a name="module_ecs-service"></a> [ecs-service](#module\_ecs-service)                                                                                            | ../../modules/services/ecs-service                    | n/a     |
-| <a name="module_org-role-ecs"></a> [org-role-ecs](#module\_org-role-ecs)                                                                                         | ../../modules/infrastructure/permissions/org-role-ecs | n/a     |
-| <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group)                                                                                 | ../../modules/infrastructure/resource-group           | n/a     |
-| <a name="module_resource_group_secure_for_cloud_member"></a> [resource\_group\_secure\_for\_cloud\_member](#module\_resource\_group\_secure\_for\_cloud\_member) | ../../modules/infrastructure/resource-group           | n/a     |
-| <a name="module_vpc-ecs"></a> [vpc-ecs](#module\_vpc-ecs)                                                                                                        | ../../modules/infrastructure/vpc-ecs                  | n/a     |
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_ecs-service"></a> [ecs-service](#module\_ecs-service) | ../../modules/services/ecs-service | n/a |
+| <a name="module_org-role-ecs"></a> [org-role-ecs](#module\_org-role-ecs) | ../../../modules/infrastructure/permissions/org-role-ecs | n/a |
+| <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | ../../modules/infrastructure/resource-group | n/a |
+| <a name="module_resource_group_secure_for_cloud_member"></a> [resource\_group\_secure\_for\_cloud\_member](#module\_resource\_group\_secure\_for\_cloud\_member) | ../../modules/infrastructure/resource-group | n/a |
+| <a name="module_vpc-ecs"></a> [vpc-ecs](#module\_vpc-ecs) | ../../modules/infrastructure/vpc-ecs | n/a |
 
 ## Resources
 
-| Name                                                                                                                                           | Type        |
-|------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| [aws_iam_role.ccs_ecs_task_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role)                         | resource    |
+| Name | Type |
+|------|------|
+| [aws_iam_role.ccs_ecs_task_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_policy_document.task_assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
 
-| Name                                                                                                                                                               | Description                                                                                                                                                                                   | Type           | Default                                                     | Required |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|-------------------------------------------------------------|:--------:|
-| <a name="input_CCS_member_account_id"></a> [CCS\_member\_account\_id](#input\_CCS\_member\_account\_id)                                                            | Member Account ID where scanner resources will be deployed                                                                                                                                    | `string`       | `""`                                                        |    no    |
-| <a name="input_ccs_ecs_task_role_name"></a> [ccs\_ecs\_task\_role\_name](#input\_ccs\_ecs\_task\_role\_name)                                                       | Name for the ecs task role. This is only required to resolve cyclic dependency with organizational approach                                                                                   | `string`       | `"organizational-ECSTaskRole"`                              |    no    |
-| <a name="input_deepfence-key"></a> [deepfence-key](#input\_deepfence-key)                                                                                          | deepfence-key                                                                                                                                                                                 | `string`       | `""`                                                        |    no    |
-| <a name="input_ecs_vpc_region_azs"></a> [ecs\_vpc\_region\_azs](#input\_ecs\_vpc\_region\_azs)                                                                     | List of Availability Zones for ECS VPC creation. e.g.: ["apne1-az1", "apne1-az2"]. If defaulted, two of the default 'aws\_availability\_zones' datasource will be taken                       | `list(string)` | `[]`                                                        |    no    |
-| <a name="input_mgmt-console-port"></a> [mgmt-console-port](#input\_mgmt-console-port)                                                                              | mgmt-console-port                                                                                                                                                                             | `string`       | `"443"`                                                     |    no    |
-| <a name="input_mgmt-console-url"></a> [mgmt-console-url](#input\_mgmt-console-url)                                                                                 | mgmt-console-url                                                                                                                                                                              | `string`       | `""`                                                        |    no    |
-| <a name="input_mode"></a> [mode](#input\_mode)                                                                                                                     | mode                                                                                                                                                                                          | `string`       | `"service"`                                                 |    no    |
-| <a name="input_name"></a> [name](#input\_name)                                                                                                                     | Prefix name for all resources                                                                                                                                                                 | `string`       | `"deepfence-cloud-scanner"`                                 |    no    |
-| <a name="input_organizational_member_default_admin_role"></a> [organizational\_member\_default\_admin\_role](#input\_organizational\_member\_default\_admin\_role) | Default role created by AWS for management-account users to be able to admin member accounts.<br/>https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html | `string`       | `"OrganizationAccountAccessRole"`                           |    no    |
-| <a name="input_region"></a> [region](#input\_region)                                                                                                               | the AWS region in which resources are created, you must set the availability\_zones variable as well if you define this value to something other than the default                             | `string`       | `"us-east-1"`                                               |    no    |
-| <a name="input_tags"></a> [tags](#input\_tags)                                                                                                                     | Default tag for resource                                                                                                                                                                      | `map(string)`  | <pre>{<br>  "product": "deepfence-cloud-scanner"<br>}</pre> |    no    |
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_CCS_member_account_id"></a> [CCS\_member\_account\_id](#input\_CCS\_member\_account\_id) | Member Account ID where scanner resources will be deployed | `string` | `""` | no |
+| <a name="input_ccs_ecs_task_role_name"></a> [ccs\_ecs\_task\_role\_name](#input\_ccs\_ecs\_task\_role\_name) | Name for the ecs task role. This is only required to resolve cyclic dependency with organizational approach | `string` | `"organizational-ECSTaskRole"` | no |
+| <a name="input_deepfence-key"></a> [deepfence-key](#input\_deepfence-key) | deepfence-key | `string` | `""` | no |
+| <a name="input_ecs_vpc_region_azs"></a> [ecs\_vpc\_region\_azs](#input\_ecs\_vpc\_region\_azs) | List of Availability Zones for ECS VPC creation. e.g.: ["apne1-az1", "apne1-az2"]. If defaulted, two of the default 'aws\_availability\_zones' datasource will be taken | `list(string)` | `[]` | no |
+| <a name="input_mgmt-console-port"></a> [mgmt-console-port](#input\_mgmt-console-port) | mgmt-console-port | `string` | `"443"` | no |
+| <a name="input_mgmt-console-url"></a> [mgmt-console-url](#input\_mgmt-console-url) | mgmt-console-url | `string` | `""` | no |
+| <a name="input_mode"></a> [mode](#input\_mode) | mode | `string` | `"service"` | no |
+| <a name="input_multiple-acc-ids"></a> [multiple-acc-ids](#input\_multiple-acc-ids) | These account ids are those where scanning will be done | `string` | `""` | no |
+| <a name="input_name"></a> [name](#input\_name) | Prefix name for all resources | `string` | `"deepfence-cloud-scanner"` | no |
+| <a name="input_org-acc-id"></a> [org-acc-id](#input\_org-acc-id) | This account id is the management account id which is there in an organizational setup | `string` | `""` | no |
+| <a name="input_organizational_member_default_admin_role"></a> [organizational\_member\_default\_admin\_role](#input\_organizational\_member\_default\_admin\_role) | Default role created by AWS for management-account users to be able to admin member accounts.<br/>https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html | `string` | `"OrganizationAccountAccessRole"` | no |
+| <a name="input_region"></a> [region](#input\_region) | the AWS region in which resources are created, you must set the availability\_zones variable as well if you define this value to something other than the default | `string` | `"us-east-1"` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Default tag for resource | `map(string)` | <pre>{<br>  "product": "deepfence-cloud-scanner"<br>}</pre> | no |
 
 ## Outputs
 
 No outputs.
+

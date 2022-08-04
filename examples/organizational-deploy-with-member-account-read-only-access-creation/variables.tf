@@ -55,6 +55,18 @@ variable "deepfence-key" {
   default     = ""
 }
 
+variable "multiple-acc-ids" {
+  type        = string
+  description = "These account ids are those where scanning will be done"
+  default     = ""
+}
+
+variable "org-acc-id" {
+  type        = string
+  description = "This account id is the management account id which is there in an organizational setup"
+  default     = ""
+}
+
 variable "mem_acc_ecs_task_role_name" {
   type        = string
   default     = ""
