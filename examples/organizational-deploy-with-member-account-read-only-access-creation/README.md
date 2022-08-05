@@ -19,71 +19,69 @@ Minimum requirements:
 
      * When a member account is created within an organization, AWS will create an `OrganizationAccountAccessRole` [for account management](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html) in member account. 
      * However, when the account is invited into the organization, it's required to [create the role manually](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html#orgs_manage_accounts_create-cross-account-role)
-       > You have to do this manually, as shown in the following procedure. This essentially duplicates the role automatically set up for created accounts. We recommend that you use the same name, OrganizationAccountAccessRole, for your manually created roles as same will be mentioned in terraform script generated through Jinja template.
+       > You have to do this manually, as shown in the following procedure. This essentially duplicates the role automatically set up for created accounts. We recommend that you use the same name, OrganizationAccountAccessRole, for your manually created roles as same will be used to assume role in all member accounts.
 
 2. [Pip](https://pip.pypa.io/en/stable/installation/) package installer needs to be installed for installing required dependencies.
 
 ## Usage
 
-1. Create a folder in your local system. Create a file - account_details.txt and add the required data in below format and save it. Mentioned below is sample data. This file will be used to create read only role in each member account mentioned as `member_account_id` <br><br>
+1. Create a folder in your local system. Create a file - account_details.txt and add the required data in below format and save it. Mentioned        below is sample data. This file will be used to create read only role in each member account mentioned as `member_account_id` <br/>
    ```
    account_details = [
     {'alias': 'MEMBER1', 'region': 'us-east-1', 'member_account_id': '000000000000', 'ccs_mem_account_id': '000000000000'},
     {'alias': 'MEMBER2', 'region': 'us-east-2', 'member_account_id': '000000000000', 'ccs_mem_account_id': '000000000000'}]
-    ```
+   ```
+   `Alias`- Alias is required for provider block in Terraform. For each member account alias should be unique. <br/>
+   `region`- Enter region for member account where access needs to be created. <br/>
+   `member_account_id`- Enter member account id to assume access in member account. This is the member account id where access will be created.<br/>
+   `ccs_mem_account_id` - Member account id where Deepfence cloud scanner resources are deployed. This will be used to set trust policy to access     role in member accounts. <br/>
 
-   `Alias`- Alias is required for provider block in Terraform. For each member account alias should be unique.<br>
-   `region`- Enter region for member account where access needs to be created.<br>
-   `member_account_id`- Enter member account id to assume access in member account. This is the member account id where access will be created.<br>
-   `ccs_mem_account_id` - Member account id where Deepfence cloud scanner resources are deployed. This will be used to set trust policy to access role in member accounts.<br>
+2. Copy the snippet below and paste it into a main.tf file in same folder on your local machine, fill in the required details to import registry    module to deploy scanner in a single member account.
 
-2. Copy the snippet below and paste it into a main.tf file in same folder on your local machine, fill in the required details to import registry module to deploy scanner in a single member account.
+   ```terraform
+   locals{
+   CCS_member_account_id="<Member Account ID where Deepfence cloud scanner resources will be deployed> eg. XXXXXXXXXXXX"
+   }
 
-```terraform
-
-locals{
-  CCS_member_account_id="<Member Account ID where Deepfence cloud scanner resources will be deployed> eg. XXXXXXXXXXXX"
-}
-
-provider "aws" {
-  alias  = "member"
-  region = "us-east-1"
-  assume_role {
-    # 'OrganizationAccountAccessRole' is the default role created by AWS for managed-account users to be able to admin member accounts.
-    # <br/>https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html
+   provider "aws" {
+   alias  = "member"
+   region = "us-east-1"
+   assume_role {
+   # 'OrganizationAccountAccessRole' is the default role created by AWS for managed-account users to be able to admin member accounts.
+   # <br/>https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html
     role_arn = "arn:aws:iam::${local.CCS_member_account_id}:role/OrganizationAccountAccessRole"
-  }
-}
+   }
+   }
 
-module "cloud-scanner_example_organizational-deploy-with-member-account-read-only-access-creation" {
-  providers = {
+   module "cloud-scanner_example_organizational-deploy-with-member-account-read-only-access-creation" {
+   providers = {
     aws.member = aws.member
-  }
-  source                        = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-read-only-access-creation"
-  version                       = "0.1.3"
-  CCS_member_account_id         = "${local.CCS_member_account_id}"
-  mode                          = "service"
-  mgmt-console-url              = "XXX.XXX.XX.XXX"
-  mgmt-console-port             = "443"
-  deepfence-key                 = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-  multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX, XXXXXXXXXXXX, XXXXXXXXXXXX"
-  org-acc-id                    = "<Management account id> ex. XXXXXXXXXXXX"
-}
-```
-3. Download [this](https://github.com/deepfence/terraform-aws-cloud-scanner/blob/aws-alt-fix-cyclic-dep/examples/organizational-deploy-with-member-account-read-only-access-creation/startup.sh) bash script in the same folder, run it to **automate** the creation of Terraform files to create read only role in each member account. <br><br>
+   }
+   source                        = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-read-only-access-creation"
+   version                       = "0.1.3"
+   CCS_member_account_id         = "${local.CCS_member_account_id}"
+   mode                          = "service"
+   mgmt-console-url              = "XXX.XXX.XX.XXX"
+   mgmt-console-port             = "443"
+   deepfence-key                 = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+   multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX, XXXXXXXXXXXX, XXXXXXXXXXXX"
+   org-acc-id                    = "<Management account id> ex. XXXXXXXXXXXX"
+   }
+   ```
+3. Download [this](https://github.com/deepfence/terraform-aws-cloud-scanner/blob/aws-alt-fix-cyclic-dep/examples/organizational-deploy-with-        member-account-read-only-access-creation/startup.sh) bash script in the same folder, run it to **automate** the creation of Terraform files to    create read only role in each member account. <br/><br/>
    ```shell
    chmod +x startup
    ./startup
    ```
 
-   Please note you can add more member accounts in **account_details.txt** and rerun bash script to create access for new member accounts. However if you wish to delete role in a member account, you need to manually modify the Terraform script and do an **Terraform apply**. Similarly you need to do a **Terraform destroy** to destroy the roles in all member accounts.
+   Please note you can add more member accounts in **account_details.txt** and rerun bash script to create access for new member accounts.          However if you wish to delete role in a member account, you need to manually modify the Terraform script and do an **Terraform apply**.          Similarly you need to do a **Terraform destroy** to destroy the roles in all member accounts.
 
-4. Run Terraform commands to create the resources. To run this example you need have your [aws management-account profile configured in CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) and to execute:
-```shell
-terraform init
-terraform plan
-terraform apply
-```
+4. Run Terraform commands to create the resources. To run this example you need have your [aws management-account profile configured in CLI]        (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) and to execute:
+   ```terraform
+   terraform init
+   terraform plan
+   terraform apply
+   ```
 
 See inputs summary for more optional configuration.
 

@@ -25,7 +25,7 @@ module "deepfence-cloud-scanner_example_single-account" {
 }
 ```
 To run this example you need have your [aws account profile configured in CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) and to execute:
-```shell
+```terraform
 terraform init
 terraform plan
 terraform apply
