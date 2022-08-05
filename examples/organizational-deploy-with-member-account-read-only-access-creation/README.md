@@ -23,6 +23,8 @@ Minimum requirements:
 
 2. [Pip](https://pip.pypa.io/en/stable/installation/) package installer needs to be installed for installing required dependencies.
 
+3. Configure the default account details in aws config file with management account. 
+
 ## Usage
 
 1. Create a folder in your local system. Create a file - account_details.txt and add the required data in below format and save it. Mentioned        below is sample data. This file will be used to create read only role in each member account mentioned as `member_account_id` <br/>
@@ -58,24 +60,25 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
     aws.member = aws.member
    }
    source                        = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-read-only-access-creation"
-   version                       = "0.1.0"
+   version                       = "0.1.4"
    CCS_member_account_id         = "${local.CCS_member_account_id}"
+   name                          = var.name
+   tags                          = var.tags
    mgmt-console-url              = "<Console URL> eg. XXX.XXX.XX.XXX"
    mgmt-console-port             = "443"
    deepfence-key                 = "<Deepfence-key> eg. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
    multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX, XXXXXXXXXXXX, XXXXXXXXXXXX"
-   org-acc-id                    = "<Management account id> ex. XXXXXXXXXXXX"
 }
 ```
-3. Download [this](https://github.com/deepfence/terraform-aws-cloud-scanner/blob/aws-alt-fix-cyclic-dep/examples/organizational-deploy-with-        member-account-read-only-access-creation/startup.sh) bash script in the same folder, run it to **automate** the creation of Terraform files to    create read only role in each member account. <br/><br/>
+3. Download [this](https://github.com/deepfence/terraform-aws-cloud-scanner/blob/main/examples/organizational-deploy-with-member-account-read-only-access-creation/startup.sh) bash script in the same folder, run it to **automate** the creation of Terraform files to    create read only role in each member account. <br/><br/>
 ```shell
 chmod +x startup
 ./startup
 ```
 
-   Please note you can add more member accounts in **account_details.txt** and rerun bash script to create access for new member accounts.          However if you wish to delete role in a member account, you need to manually modify the Terraform script and do an **Terraform apply**.          Similarly you need to do a **Terraform destroy** to destroy the roles in all member accounts.
+   Please note you can add more member accounts in **account_details.txt** and rerun bash script to create access for new member accounts.          However if you wish to delete role in a member account, you need to manually modify the Terraform script and do a **Terraform apply**.          
 
-4. Run Terraform commands to create the resources. To run this example you need have your [aws management-account profile configured in CLI]        (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) and to execute:
+4. Run Terraform commands to create the resources. To run this example you need have your [aws management-account profile configured in CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) and to execute:
 ```terraform
 terraform init
 terraform plan

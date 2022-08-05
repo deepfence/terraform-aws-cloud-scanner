@@ -4,7 +4,9 @@ Deploy Deepfence cloud scanner for AWS in a Organizational setup. This approach 
 
 ## Prerequisites
 
-There should be a read only access role in each of the member account before running this module. The name of the role should be same in all accounts which will be passed as input in this module. This role must have trust policy to be assumed by role named `deepfence-cloud-scanner-organizational-ECSTaskRole` in member account where Deepfence cloud scanner stack will be deployed. Also, the account where Deepfence cloud scanner stack will be deployed must have policy to assume role in all accounts.
+1. There should be a read only access role in each of the member account before running this module. The name of the role should be same in all accounts which will be passed as input in this module. This role must have trust policy to be assumed by role named `deepfence-cloud-scanner-organizational-ECSTaskRole` in member account where Deepfence cloud scanner stack will be deployed. Also, the account where Deepfence cloud scanner stack will be deployed must have policy to assume role in all accounts.
+
+2. Configure the default account details in aws config file with management account. Management account will be used to assume role in member accounts and deploy resources.
 
 Setup is as follows-
 * In the **user-provided member account**
@@ -36,14 +38,13 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-access-p
     aws.member = aws.member
   }
   source                                   = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-access-pre-created"
-  version                                  = "0.1.0"
+  version                                  = "0.1.4"
   CCS_member_account_id                    = "<Member Account ID where Deepfence cloud scanner resources will be deployed> ex. XXXXXXXXXXXX"
   common_role_in_all_account_to_be_scanned = "<Role name> ex. read_only_role"
   mgmt-console-url                         = "<Console URL> ex. XXX.XXX.XX.XXX"
   mgmt-console-port                        = "443"
   deepfence-key                            = "<Deepfence-key> ex. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
   multiple-acc-ids                         = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX, XXXXXXXXXXXX, XXXXXXXXXXXX"
-  org-acc-id                               = "<Management account id> ex. XXXXXXXXXXXX"
 }
 
 ```

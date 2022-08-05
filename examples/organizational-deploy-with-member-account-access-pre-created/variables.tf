@@ -61,12 +61,6 @@ variable "multiple-acc-ids" {
   default     = ""
 }
 
-variable "org-acc-id" {
-  type        = string
-  description = "This account id is the management account id which is there in an organizational setup"
-  default     = ""
-}
-
 # organizational setup variables
 
 variable "ccs_ecs_task_role_name" {

@@ -33,6 +33,8 @@ Minimum requirements:
        > You have to do this manually, as shown in the following procedure. This essentially duplicates the role automatically set up for created accounts. We recommend that you use the same name, OrganizationAccountAccessRole, for your manually created roles for consistency and ease of remembering.
      * If role name, `OrganizationAccountAccessRole` wants to be modified, it must be done both on the `aws` member-account provider AND input value `organizational_member_default_admin_role`
 
+4. Configure the default account details in aws config file with management account. 
+
 5. Provide a member **account ID for Deepfence cloud scanner workload** to be deployed.
    Our recommendation is for this account to be empty, so that deployed resources are not mixed up with your workload.
    This input must be provided as terraform required input value
@@ -83,13 +85,12 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-wri
     aws.member = aws.member
   }
   source                        = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-read-write-access-creation"
-  version                       = "0.1.0"
+  version                       = "0.1.4"
   CCS_member_account_id         = "<Member Account ID where Deepfence cloud scanner resources will be deployed> eg. XXXXXXXXXXXX"
   mgmt-console-url              = "<Console URL> eg. XXX.XXX.XX.XXX"
   mgmt-console-port             = "443"
   deepfence-key                 = "<Deepfence-key> eg. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
   multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX, XXXXXXXXXXXX, XXXXXXXXXXXX"
-  org-acc-id                    = "<Management account id available in organization setup> ex. XXXXXXXXXXXX"
 }
 
 ```

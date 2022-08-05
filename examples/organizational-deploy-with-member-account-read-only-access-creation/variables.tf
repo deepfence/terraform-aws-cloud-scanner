@@ -3,15 +3,11 @@
 variable "name" {
   type        = string
   description = "Prefix name for all resources"
-  default     = "deepfence-cloud-scanner"
 }
 
 variable "tags" {
   type        = map(string)
   description = "Default tag for resource"
-  default = {
-    "product" = "deepfence-cloud-scanner"
-  }
 }
 
 # variable to store availability Zones
@@ -58,12 +54,6 @@ variable "deepfence-key" {
 variable "multiple-acc-ids" {
   type        = string
   description = "These account ids are those where scanning will be done"
-  default     = ""
-}
-
-variable "org-acc-id" {
-  type        = string
-  description = "This account id is the management account id which is there in an organizational setup"
   default     = ""
 }
 

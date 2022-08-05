@@ -1,7 +1,7 @@
 # creates a role in management account
 
 module "org-role-ecs" {
-  source = "../../../modules/infrastructure/permissions/org-role-ecs"
+  source = "../../modules/infrastructure/permissions/org-role-ecs"
   providers = {
     aws.member = aws.member
   }
