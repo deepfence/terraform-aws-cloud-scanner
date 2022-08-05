@@ -24,7 +24,7 @@ Deepfence workload will be deployed in the same account where user's resources w
 
 Please check out below to implement the same:
 
-[`./examples/single-account-ecs`](examples/single-account-ecs)
+[`./examples/single-account-ecs`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/single-account-ecs)
 
 ### - Organizational
 
@@ -32,9 +32,9 @@ Deepfence workload will be deployed in a separate member account. A read only ro
 
 Please check out below to implement the same:
 
-- [`./examples/organizational-deploy-with-member-account-access-pre-created`](examples/organizational-deploy-with-member-account-access-pre-created)
-- [`./examples/organizational-deploy-with-member-account-read-only-access-creation`](examples/organizational-deploy-with-member-account-read-only-access-creation)
-- [`./examples/organizational-deploy-with-member-account-read-write-access-creation`](examples/organizational-deploy-with-member-account-read-write-access-creation)
+- [`./examples/organizational-deploy-with-member-account-access-pre-created`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/organizational-deploy-with-member-account-access-pre-created)
+- [`./examples/organizational-deploy-with-member-account-read-only-access-creation`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/organizational-deploy-with-member-account-read-only-access-creation)
+- [`./examples/organizational-deploy-with-member-account-read-write-access-creation`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/organizational-deploy-with-member-account-read-write-access-creation)
 
 ## Authors
 
