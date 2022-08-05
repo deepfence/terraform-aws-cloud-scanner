@@ -22,15 +22,19 @@ User deploying the resources needs the below access on AWS-
 
 Deepfence workload will be deployed in the same account where user's resources will be watched.
 
-Please check out below to implement the same- <br>
-[`./examples/single-account-ecs`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/single-account-ecs)
+Please check out below to implement the same:
+
+[`./examples/single-account-ecs`](examples/single-account-ecs)
 
 ### - Organizational
 
 Deepfence workload will be deployed in a separate member account. A read only role in all other accounts will be assumed to perform scan in all the accounts
-<br/>
-Please check out below to implement the same- <br>
-[`./examples/organizational`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/)
+
+Please check out below to implement the same:
+
+- [`./examples/organizational-deploy-with-member-account-access-pre-created`](examples/organizational-deploy-with-member-account-access-pre-created)
+- [`./examples/organizational-deploy-with-member-account-read-only-access-creation`](examples/organizational-deploy-with-member-account-read-only-access-creation)
+- [`./examples/organizational-deploy-with-member-account-read-write-access-creation`](examples/organizational-deploy-with-member-account-read-write-access-creation)
 
 ## Authors
 

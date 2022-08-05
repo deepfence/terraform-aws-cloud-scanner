@@ -66,6 +66,7 @@ variable "cloudwatch_log_retention" {
 variable "mode" {
   type        = string
   description = "mode"
+  default     = "service"
 }
 
 variable "mgmt-console-url" {

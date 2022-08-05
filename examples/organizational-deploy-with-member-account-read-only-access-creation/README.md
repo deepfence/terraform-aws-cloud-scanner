@@ -1,6 +1,6 @@
-# Deepfence cloud scanner in AWS<br/>[ Example :: Organizational account setup ] - Deploy with member-account read-only access creation.
+# Deepfence Cloud Scanner in AWS<br/>[ Example :: Organizational account setup ] - Deploy with member-account read-only access creation.
 
-Deploy Deepfence cloud scanner for AWS in a Organizational setup. This approach involves deploying Deepfence cloud scanner in a single member account and creating a read only access role in all other member accounts for scanning. Jinja template, doit and bash script is used to automate creation of Terraform files for access creation in all member accounts. <br/>
+Deploy Deepfence cloud scanner for AWS in an Organizational setup. This approach involves deploying Deepfence cloud scanner in a single member account and creating a read only access role in all other member accounts for scanning. Jinja template, doit and bash script is used to automate creation of Terraform files for access creation in all member accounts. <br/>
 
 Setup is as follows-
 * In the **user-provided member account**
@@ -38,12 +38,12 @@ Minimum requirements:
 
 2. Copy the snippet below and paste it into a main.tf file in same folder on your local machine, fill in the required details to import registry    module to deploy scanner in a single member account.
 
-   ```terraform
-   locals{
+```terraform
+locals{
    CCS_member_account_id="<Member Account ID where Deepfence cloud scanner resources will be deployed> eg. XXXXXXXXXXXX"
-   }
+}
 
-   provider "aws" {
+provider "aws" {
    alias  = "member"
    region = "us-east-1"
    assume_role {
@@ -51,37 +51,36 @@ Minimum requirements:
    # <br/>https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html
     role_arn = "arn:aws:iam::${local.CCS_member_account_id}:role/OrganizationAccountAccessRole"
    }
-   }
+}
 
-   module "cloud-scanner_example_organizational-deploy-with-member-account-read-only-access-creation" {
+module "cloud-scanner_example_organizational-deploy-with-member-account-read-only-access-creation" {
    providers = {
     aws.member = aws.member
    }
    source                        = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-read-only-access-creation"
-   version                       = "0.1.3"
+   version                       = "0.1.0"
    CCS_member_account_id         = "${local.CCS_member_account_id}"
-   mode                          = "service"
-   mgmt-console-url              = "XXX.XXX.XX.XXX"
+   mgmt-console-url              = "<Console URL> eg. XXX.XXX.XX.XXX"
    mgmt-console-port             = "443"
-   deepfence-key                 = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+   deepfence-key                 = "<Deepfence-key> eg. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
    multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX, XXXXXXXXXXXX, XXXXXXXXXXXX"
    org-acc-id                    = "<Management account id> ex. XXXXXXXXXXXX"
-   }
-   ```
+}
+```
 3. Download [this](https://github.com/deepfence/terraform-aws-cloud-scanner/blob/aws-alt-fix-cyclic-dep/examples/organizational-deploy-with-        member-account-read-only-access-creation/startup.sh) bash script in the same folder, run it to **automate** the creation of Terraform files to    create read only role in each member account. <br/><br/>
-   ```shell
-   chmod +x startup
-   ./startup
-   ```
+```shell
+chmod +x startup
+./startup
+```
 
    Please note you can add more member accounts in **account_details.txt** and rerun bash script to create access for new member accounts.          However if you wish to delete role in a member account, you need to manually modify the Terraform script and do an **Terraform apply**.          Similarly you need to do a **Terraform destroy** to destroy the roles in all member accounts.
 
 4. Run Terraform commands to create the resources. To run this example you need have your [aws management-account profile configured in CLI]        (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) and to execute:
-   ```terraform
-   terraform init
-   terraform plan
-   terraform apply
-   ```
+```terraform
+terraform init
+terraform plan
+terraform apply
+```
 
 See inputs summary for more optional configuration.
 

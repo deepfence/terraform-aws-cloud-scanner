@@ -78,16 +78,15 @@ provider "aws" {
   }
 }
 
-module "deepfence-cloud-scanner_example_organizational" {
+module "cloud-scanner_example_organizational-deploy-with-member-account-read-write-access-creation" {
   providers = {
     aws.member = aws.member
   }
-  source  = "deepfence/cloud-scanner/aws/examples/organizational"
-  version = "0.1.0"
+  source                        = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-read-write-access-creation"
+  version                       = "0.1.0"
   CCS_member_account_id         = "<Member Account ID where Deepfence cloud scanner resources will be deployed> eg. XXXXXXXXXXXX"
-  mode                          = "<Mode type> eg. service"
   mgmt-console-url              = "<Console URL> eg. XXX.XXX.XX.XXX"
-  mgmt-console-port             = "<Console port> eg. 443"
+  mgmt-console-port             = "443"
   deepfence-key                 = "<Deepfence-key> eg. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
   multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX, XXXXXXXXXXXX, XXXXXXXXXXXX"
   org-acc-id                    = "<Management account id available in organization setup> ex. XXXXXXXXXXXX"
