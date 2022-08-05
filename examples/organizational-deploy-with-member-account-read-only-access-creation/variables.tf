@@ -3,15 +3,11 @@
 variable "name" {
   type        = string
   description = "Prefix name for all resources"
-  default     = "deepfence-cloud-scanner"
 }
 
 variable "tags" {
   type        = map(string)
   description = "Default tag for resource"
-  default = {
-    "product" = "deepfence-cloud-scanner"
-  }
 }
 
 # variable to store availability Zones

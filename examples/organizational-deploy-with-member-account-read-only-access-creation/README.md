@@ -62,6 +62,8 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
    source                        = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-read-only-access-creation"
    version                       = "0.1.4"
    CCS_member_account_id         = "${local.CCS_member_account_id}"
+   name                          = var.name
+   tags                          = var.tags
    mgmt-console-url              = "<Console URL> eg. XXX.XXX.XX.XXX"
    mgmt-console-port             = "443"
    deepfence-key                 = "<Deepfence-key> eg. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
