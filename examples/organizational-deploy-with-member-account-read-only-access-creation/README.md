@@ -67,15 +67,15 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
    org-acc-id                    = "<Management account id> ex. XXXXXXXXXXXX"
 }
 ```
-3. Download [this](https://github.com/deepfence/terraform-aws-cloud-scanner/blob/aws-alt-fix-cyclic-dep/examples/organizational-deploy-with-        member-account-read-only-access-creation/startup.sh) bash script in the same folder, run it to **automate** the creation of Terraform files to    create read only role in each member account. <br/><br/>
+3. Download [this](https://github.com/deepfence/terraform-aws-cloud-scanner/blob/main/examples/organizational-deploy-with-member-account-read-only-access-creation/startup.sh) bash script in the same folder, run it to **automate** the creation of Terraform files to    create read only role in each member account. <br/><br/>
 ```shell
 chmod +x startup
 ./startup
 ```
 
-   Please note you can add more member accounts in **account_details.txt** and rerun bash script to create access for new member accounts.          However if you wish to delete role in a member account, you need to manually modify the Terraform script and do an **Terraform apply**.          Similarly you need to do a **Terraform destroy** to destroy the roles in all member accounts.
+   Please note you can add more member accounts in **account_details.txt** and rerun bash script to create access for new member accounts.          However if you wish to delete role in a member account, you need to manually modify the Terraform script and do a **Terraform apply**.          
 
-4. Run Terraform commands to create the resources. To run this example you need have your [aws management-account profile configured in CLI]        (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) and to execute:
+4. Run Terraform commands to create the resources. To run this example you need have your [aws management-account profile configured in CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) and to execute:
 ```terraform
 terraform init
 terraform plan
