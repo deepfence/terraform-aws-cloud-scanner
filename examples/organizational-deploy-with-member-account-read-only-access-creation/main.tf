@@ -1,13 +1,3 @@
-provider "aws" {
-  alias  = "member"
-  region = "us-east-1"
-  assume_role {
-    # 'OrganizationAccountAccessRole' is the default role created by AWS for managed-account users to be able to admin member accounts.
-    # <br/>https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html
-    role_arn = "arn:aws:iam::642565403566:role/OrganizationAccountAccessRole"
-  }
-}
-
 # module creates resource group
 
 module "resource_group" {
