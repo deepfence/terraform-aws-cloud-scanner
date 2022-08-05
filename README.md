@@ -28,9 +28,9 @@ Please check out below to implement the same:
 
 ### - Organizational
 
-Deepfence workload will be deployed in a separate member account. A read only role in all other accounts will be assumed to perform scan in all the accounts
+Deepfence workload will be deployed in a separate member account while scanning will be done in multiple member accounts. 
 
-Please check out below to implement the same:
+Following are three methods to deploy the same: 
 
 - [`./examples/organizational-deploy-with-member-account-access-pre-created`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/organizational-deploy-with-member-account-access-pre-created)
 - [`./examples/organizational-deploy-with-member-account-read-only-access-creation`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/organizational-deploy-with-member-account-read-only-access-creation)

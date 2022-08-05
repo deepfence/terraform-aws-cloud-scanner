@@ -1,3 +1,17 @@
+provider "aws" {
+  region = "us-east-1"
+}
+
+provider "aws" {
+  alias  = "member"
+  region = "us-east-1"
+  assume_role {
+    # 'OrganizationAccountAccessRole' is the default role created by AWS for managed-account users to be able to admin member accounts.
+    # <br/>https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html
+    role_arn = "arn:aws:iam::642565403566:role/OrganizationAccountAccessRole"
+  }
+}
+
 # module creates resource group
 
 module "resource_group" {
@@ -51,8 +65,8 @@ module "ecs-service" {
   mgmt-console-url            = var.mgmt-console-url
   mgmt-console-port           = var.mgmt-console-port
   deepfence-key               = var.deepfence-key
-   multiple-acc-ids           = var.multiple-acc-ids
-  org-acc-id                  = var.org-acc-id
+  multiple-acc-ids            = var.multiple-acc-ids
+  org-acc-id                  = data.aws_caller_identity.me.account_id
 
   depends_on = [aws_iam_role.ccs_ecs_task_role]
 

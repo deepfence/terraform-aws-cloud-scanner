@@ -4,7 +4,9 @@ Deploy Deepfence cloud scanner for AWS in a Organizational setup. This approach 
 
 ## Prerequisites
 
-There should be a read only access role in each of the member account before running this module. The name of the role should be same in all accounts which will be passed as input in this module. This role must have trust policy to be assumed by role named `deepfence-cloud-scanner-organizational-ECSTaskRole` in member account where Deepfence cloud scanner stack will be deployed. Also, the account where Deepfence cloud scanner stack will be deployed must have policy to assume role in all accounts.
+1. There should be a read only access role in each of the member account before running this module. The name of the role should be same in all accounts which will be passed as input in this module. This role must have trust policy to be assumed by role named `deepfence-cloud-scanner-organizational-ECSTaskRole` in member account where Deepfence cloud scanner stack will be deployed. Also, the account where Deepfence cloud scanner stack will be deployed must have policy to assume role in all accounts.
+
+2. Configure the default account details in aws config file with management account. Management account will be used to assume role in member accounts and deploy resources.
 
 Setup is as follows-
 * In the **user-provided member account**
@@ -43,7 +45,6 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-access-p
   mgmt-console-port                        = "443"
   deepfence-key                            = "<Deepfence-key> ex. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
   multiple-acc-ids                         = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX, XXXXXXXXXXXX, XXXXXXXXXXXX"
-  org-acc-id                               = "<Management account id> ex. XXXXXXXXXXXX"
 }
 
 ```
