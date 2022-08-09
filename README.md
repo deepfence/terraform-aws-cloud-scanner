@@ -32,9 +32,9 @@ Deepfence workload will be deployed in a separate member account while scanning 
 
 Following are three methods to deploy the same: 
 
-- [`./examples/organizational-deploy-with-member-account-access-pre-created`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/organizational-deploy-with-member-account-access-pre-created)
+
 - [`./examples/organizational-deploy-with-member-account-read-only-access-creation`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/organizational-deploy-with-member-account-read-only-access-creation)
-- [`./examples/organizational-deploy-with-member-account-read-write-access-creation`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/organizational-deploy-with-member-account-read-write-access-creation)
+
 
 ## Authors
 
