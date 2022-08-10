@@ -23,16 +23,18 @@ module "vpc-ecs" {
 # module creates ecs service with container
 
 module "ecs-service" {
-  source                        = "../../modules/services/ecs-service"
-  aws-region                    = var.region
-  ecs_vpc_subnets_private_ids   = module.vpc-ecs.ecs_vpc_subnets_private_ids
-  ecs_cluster_name              = "${var.name}-ecs-cluster"
-  tags                          = var.tags
-  mode                          = var.mode
-  mgmt-console-url              = var.mgmt-console-url 
-  mgmt-console-port             = var.mgmt-console-port
-  deepfence-key                 = var.deepfence-key
-  name                          = var.name
+  source                      = "../../modules/services/ecs-service"
+  aws-region                  = var.region
+  ecs_vpc_subnets_private_ids = module.vpc-ecs.ecs_vpc_subnets_private_ids
+  ecs_cluster_name            = "${var.name}-ecs-cluster"
+  tags                        = var.tags
+  mode                        = var.mode
+  mgmt-console-url            = var.mgmt-console-url
+  mgmt-console-port           = var.mgmt-console-port
+  deepfence-key               = var.deepfence-key
+  name                        = var.name
+  multiple-acc-ids            = ""
+  org-acc-id                  = ""
 }
 
 
