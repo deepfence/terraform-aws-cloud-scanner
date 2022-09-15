@@ -1,5 +1,9 @@
 # creates a role in member account where Deepfence cloud scanner resources will be deployed
 
+locals {
+  role_in_all_account_to_be_scanned="${var.name}-mem-acc-read-only-access"
+}
+
 resource "aws_iam_role" "ccs_ecs_task_role" {
   provider           = aws.member
   name               = "${var.name}-${var.ccs_ecs_task_role_name}"
@@ -31,7 +35,7 @@ data "aws_iam_policy_document" "mem_acc_assume_role" {
       "sts:AssumeRole",
     ]
     resources = [
-      "arn:aws:iam::*:role/${var.role_in_all_account_to_be_scanned}"
+      "arn:aws:iam::*:role/${local.role_in_all_account_to_be_scanned}"
     ]
   }
 }
