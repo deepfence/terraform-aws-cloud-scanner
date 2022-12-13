@@ -30,7 +30,7 @@ module "ecs-service" {
   }
   is_organizational = true
   organizational_config = {
-    mem_acc_ecs_task_role_name      = aws_iam_role.ccs_ecs_task_role.name
+    mem_acc_ecs_task_role_name = aws_iam_role.ccs_ecs_task_role.name
   }
 
   source                      = "../../modules/services/ecs-service"
@@ -44,6 +44,7 @@ module "ecs-service" {
   mgmt-console-port           = var.mgmt-console-port
   deepfence-key               = var.deepfence-key
   multiple-acc-ids            = var.multiple-acc-ids
+  image                       = var.image
   org-acc-id                  = data.aws_caller_identity.me.account_id
 
   depends_on = [aws_iam_role.ccs_ecs_task_role]
