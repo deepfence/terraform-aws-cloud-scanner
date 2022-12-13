@@ -55,7 +55,8 @@ variable "deepfence-key" {
   default     = ""
 }
 
-
-
-
-
+variable "image" {
+  type        = string
+  description = "Cloud Scanner image"
+  default     = "deepfenceio/cloud-scanner:latest"
+}
