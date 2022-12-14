@@ -33,6 +33,7 @@ module "ecs-service" {
   mgmt-console-port           = var.mgmt-console-port
   deepfence-key               = var.deepfence-key
   name                        = var.name
+  image                       = var.image
   multiple-acc-ids            = ""
   org-acc-id                  = ""
 }

@@ -63,6 +63,12 @@ variable "mem_acc_ecs_task_role_name" {
   description = "Name for the ecs task role. This is only required to resolve cyclic dependency with organizational approach"
 }
 
+variable "image" {
+  type        = string
+  default     = "deepfenceio/cloud-scanner:latest"
+  description = "Image of the Deepfence cloud scanner to deploy"
+}
+
 # organizational setup variables
 
 variable "ccs_ecs_task_role_name" {
