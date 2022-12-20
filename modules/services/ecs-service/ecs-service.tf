@@ -12,6 +12,11 @@ resource "aws_ecs_service" "service" {
   task_definition = aws_ecs_task_definition.task_definition.arn
   tags            = var.tags
 
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = true
+  }
+
   network_configuration {
     subnets          = var.ecs_vpc_subnets_private_ids
     assign_public_ip = false
@@ -20,7 +25,7 @@ resource "aws_ecs_service" "service" {
   lifecycle {
     ignore_changes = [task_definition, desired_count]
   }
-  
+
 }
 
 # Task definition for deploying image in container
@@ -35,17 +40,17 @@ resource "aws_ecs_task_definition" "task_definition" {
   # ARN of IAM role that allows your Amazon ECS container task to make calls to other AWS services.
   cpu    = var.container_cpu
   memory = var.container_memory
-  tags                     = var.tags
+  tags   = var.tags
 
   container_definitions = jsonencode([
     {
-      name        = "${var.name}-container"
-      image       = var.image
-      essential   = true
-      tags        = var.tags
-      name        = var.name
-      command     = ["-mode", var.mode, "-mgmt-console-url", var.mgmt-console-url, "-mgmt-console-port", var.mgmt-console-port, "-deepfence-key", var.deepfence-key, "-multiple-acc-ids", var.multiple-acc-ids, "-org-acc-id", var.org-acc-id, "-role-prefix", var.name]
-   
+      name      = "${var.name}-container"
+      image     = var.image
+      essential = true
+      tags      = var.tags
+      name      = var.name
+      command   = ["-mode", var.mode, "-mgmt-console-url", var.mgmt-console-url, "-mgmt-console-port", var.mgmt-console-port, "-deepfence-key", var.deepfence-key, "-multiple-acc-ids", var.multiple-acc-ids, "-org-acc-id", var.org-acc-id, "-role-prefix", var.name]
+
       logConfiguration = {
         logDriver = "awslogs"
         options = {
