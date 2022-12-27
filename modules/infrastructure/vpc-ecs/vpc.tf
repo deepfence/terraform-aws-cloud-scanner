@@ -8,7 +8,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = ">=3.14.0"
   name = "${var.name}-vpc"
-  
+
   cidr = "10.0.0.0/16"
 
   private_subnets         = ["10.0.1.0/24"]
@@ -26,4 +26,10 @@ module "vpc" {
   enable_vpn_gateway   = false
 
   tags = var.tags
+
+  log_config {
+      aggregation_interval = "INTERVAL_10_MIN"
+      flow_sampling        = 0.5
+      metadata             = "INCLUDE_ALL_METADATA"
+  }
 }
