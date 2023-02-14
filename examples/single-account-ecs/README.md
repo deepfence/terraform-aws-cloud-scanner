@@ -9,7 +9,7 @@ All the required resources and workloads will be run under the same account.
 ## Usage
 Copy the code below and paste it into a .tf file on your local machine.
 
-```terraform
+```bash
 
 provider "aws" {
   region = "<AWS-REGION>; eg. us-east-1"
@@ -25,7 +25,7 @@ module "deepfence-cloud-scanner_example_single-account" {
 }
 ```
 To run this example you need have your [aws account profile configured in CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) and to execute:
-```terraform
+```bash
 terraform init
 terraform plan
 terraform apply
