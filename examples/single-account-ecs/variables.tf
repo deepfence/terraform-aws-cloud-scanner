@@ -58,5 +58,5 @@ variable "deepfence-key" {
 variable "image" {
   type        = string
   description = "Cloud Scanner image"
-  default     = "deepfenceio/cloud-scanner:latest"
+  default     = "quay.io/deepfenceio/cloud-scanner:latest"
 }

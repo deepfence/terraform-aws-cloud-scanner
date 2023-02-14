@@ -14,12 +14,13 @@ Setup is as follows-
 
 ## Prerequisites
 
-Minimum requirements:
-1. Management account will be used to assume access in required member account for access creation and scanner deployment in container. In each Member account, there should be trust policy for -[`OrganizationAccountAccessRole`](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html) role to be accessed by management account. Also, assume policy should be there in management account to assume role in member accounts.
+1. Management account will be used to assume access in required member account for creating roles and to deploy the scanner in an ECS task. In each member account, there should be trust policy for -[`OrganizationAccountAccessRole`](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html) role to be accessed by management account. Also, "assume policy" should be there in management account to assume role in member accounts.
 
      * When a member account is created within an organization, AWS will create an `OrganizationAccountAccessRole` [for account management](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html) in member account. 
      * However, when the account is invited into the organization, it's required to [create the role manually](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html#orgs_manage_accounts_create-cross-account-role)
        > You have to do this manually, as shown in the following procedure. This essentially duplicates the role automatically set up for created accounts. We recommend that you use the same name, OrganizationAccountAccessRole, for your manually created roles as same will be used to assume role in all member accounts.
+2. Install awscli: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html#getting-started-install-instructions
+3. Configure your AWS account using the command `aws configure` with a user with permissions as mentioned above.
 
 ## Usage
 
@@ -33,7 +34,6 @@ chmod +x organization_deployment_helper
 wget "https://raw.githubusercontent.com/deepfence/terraform-aws-cloud-scanner/v0.3.0/examples/organizational-deploy-with-member-account-read-only-access-creation/member-account-access-creation-files/readonlyaccess.tf.j2"
 wget "https://raw.githubusercontent.com/deepfence/terraform-aws-cloud-scanner/v0.3.0/examples/organizational-deploy-with-member-account-read-only-access-creation/member-account-access-creation-files/main.tf.j2"
 
-# Ensure awscli is installed and organization account is configured 
 ./organization_deployment_helper
 ```
 
@@ -80,8 +80,8 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
    mgmt-console-url              = "<Console URL> eg. XXX.XXX.XX.XXX"
    mgmt-console-port             = "443"
    deepfence-key                 = "<Deepfence-key> eg. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-   image                         = "deepfenceio/cloud-scanner:latest"
-   multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX, XXXXXXXXXXXX, XXXXXXXXXXXX"
+   image                         = "quay.io/deepfenceio/cloud-scanner:latest"
+   multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX,XXXXXXXXXXXX,XXXXXXXXXXXX"
 }
 ```
 

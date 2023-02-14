@@ -1,6 +1,6 @@
 import re
 from pathlib import Path
-
+from urllib.parse import urlparse
 import boto3
 from jinja2 import Environment, FileSystemLoader
 
@@ -62,21 +62,37 @@ def task_render():
         print("Could not fetch AWS accounts. Please run \"aws configure\"")
         return
 
-    name = input("Enter name (example: deepfence-cloud-scanner): ")
+    name = input("Enter name of deployment (example: deepfence-cloud-scanner): ")
+    if not name:
+        print("name should not be empty")
+        return
     region = input("AWS Region to deploy Cloud Scanner: ")
+    if not region:
+        print("region should not be empty")
+        return
+    print("\nList of account ids and corresponding names:")
     for account in accounts:
         print(account["Id"], account["Name"])
 
-    deployment_member_account = int(input("AWS member account id to deploy Cloud Scanner: "))
-    selected_accounts = input("Enter comma separated account ids to monitor. (Enter all - to include all accounts): "
-                              ).split(",")
+    deployment_member_account = input(
+        "Choose one AWS member account to deploy Cloud Scanner ECS Task (IAM roles will be created in remaining accounts): ")
+    if not deployment_member_account:
+        print("account id should not be empty")
+        return
+    selected_accounts = input(
+        "Enter comma separated account ids to create IAM roles and run scans for those accounts. (Enter all - to create in all accounts): "
+        ).split(",")
     if not selected_accounts:
-        print("No account selected")
+        print("no account selected")
         return
 
+    selected_accounts = [str(i).strip() for i in selected_accounts]
+
     if selected_accounts == ["all"]:
-        pass
+        selected_accounts = [i["Id"] for i in accounts]
     else:
+        if deployment_member_account not in selected_accounts:
+            selected_accounts.append(deployment_member_account)
         accounts = [i for i in accounts if i["Id"] in selected_accounts]
 
     for account in accounts:
@@ -95,8 +111,16 @@ def task_render():
     with open(f"{iam_template_path.stem}", "w") as output_file:
         output_file.write(iam_template.render(data=account_details))
 
-    management_console_url = input("Enter management console url (example: deepfence.customer.com or 64.1.1.1): ")
+    management_console_url = input("Enter management console url (example: deepfence.customer.com or 54.54.54.54): ")
+    if not management_console_url:
+        print("invalid management console url")
+        return
+    if "http://" in management_console_url or "https://" in management_console_url:
+        management_console_url = urlparse(management_console_url).netloc
     deepfence_key = input("Enter deepfence key: ")
+    if not deepfence_key:
+        print("deepfence key should not be empty")
+        return
 
     main_template_path = Path("main.tf.j2")
     main_template = environment.get_template(str(main_template_path))
@@ -109,6 +133,8 @@ def task_render():
             "deepfence_key": deepfence_key,
             "selected_member_accounts": ",".join(selected_accounts)
         }))
+    print("Terraform scripts generated successfully (main.tf and readonlyaccess.tf)")
+    print("Now run \"terraform init && terraform apply\" to connect the AWS accounts to Deepfence Management Console")
 
 
 if __name__ == '__main__':

@@ -39,6 +39,6 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
   mgmt-console-url              = "{{data["management_console_url"]}}"
   mgmt-console-port             = "443"
   deepfence-key                 = "{{data["deepfence_key"]}}"
-  image                         = "deepfenceio/cloud-scanner:latest"
+  image                         = "quay.io/deepfenceio/cloud-scanner:latest"
   multiple-acc-ids              = "{{data["selected_member_accounts"]}}"
 }
