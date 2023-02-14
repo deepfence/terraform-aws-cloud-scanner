@@ -4,7 +4,6 @@ resource "aws_cloudwatch_log_group" "log" {
   name_prefix       = "${var.name}-log-group"
   retention_in_days = var.cloudwatch_log_retention
   tags              = var.tags
-  kms_key_id        = aws_kms_key.log_key.arn
 }
 
 # creates cloudwatch log stream from a particular source
