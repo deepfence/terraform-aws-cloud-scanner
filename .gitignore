@@ -1,5 +1,9 @@
 .idea
 
+/examples/organizational-deploy-with-member-account-read-only-access-creation/dodo.py
+/examples/organizational-deploy-with-member-account-read-only-access-creation/readonlyaccess.tf.j2
+/examples/organizational-deploy-with-member-account-read-only-access-creation/requirements.txt
+
 # Local .terraform directories
 **/.terraform/*
 
