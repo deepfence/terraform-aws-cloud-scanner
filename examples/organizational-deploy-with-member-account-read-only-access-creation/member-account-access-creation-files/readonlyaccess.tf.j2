@@ -20,6 +20,9 @@ resource "aws_iam_role" "read_only_role_{{item["alias"]}}" {
   name               = "${var.name}-mem-acc-read-only-access"
   assume_role_policy = data.aws_iam_policy_document.assume_policy_{{item["alias"]}}.json
   tags               = var.tags
+  depends_on = [
+    module.cloud-scanner_example_organizational-deploy-with-member-account-read-only-access-creation
+  ]
 }
 
 data "aws_iam_policy_document" "assume_policy_{{item["alias"]}}" {
