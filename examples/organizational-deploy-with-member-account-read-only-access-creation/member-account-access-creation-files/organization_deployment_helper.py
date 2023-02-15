@@ -91,8 +91,8 @@ def task_render():
     if selected_accounts == ["all"]:
         selected_accounts = [i["Id"] for i in accounts]
     else:
-        if deployment_member_account not in selected_accounts:
-            selected_accounts.append(deployment_member_account)
+        if deployment_member_account in selected_accounts:
+            selected_accounts.remove(deployment_member_account)
         accounts = [i for i in accounts if i["Id"] in selected_accounts]
 
     for account in accounts:
