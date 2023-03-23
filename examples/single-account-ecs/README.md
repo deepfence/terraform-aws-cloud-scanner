@@ -1,4 +1,4 @@
-# Deepfence cloud scanner in AWS<br/>[ Example :: Single-Account ] 
+# Deepfence cloud scanner in AWS<br/>[ Example :: Single-Account ]
 
 Deploy Deepfence cloud scanner for AWS in a single AWS account.<br/>
 All the required resources and workloads will be run under the same account.
@@ -21,9 +21,15 @@ module "deepfence-cloud-scanner_example_single-account" {
   mgmt-console-url              = "<Console URL> eg. XXX.XXX.XX.XXX"
   mgmt-console-port             = "443"
   deepfence-key                 = "<Deepfence-key> eg. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-  image                         = "quay.io/deepfenceio/cloud-scanner:latest"
+  name                          = "deepfence-cloud-scanner"
 }
 ```
+And create a .tfvars file containing:
+
+```bash
+image  = "quay.io/deepfenceio/cloud-scanner:latest"
+```
+
 To run this example you need have your [aws account profile configured in CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) and to execute:
 ```bash
 terraform init
