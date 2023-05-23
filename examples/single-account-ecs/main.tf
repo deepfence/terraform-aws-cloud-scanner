@@ -18,6 +18,8 @@ module "vpc-ecs" {
   ecs_vpc_region_azs = var.ecs_vpc_region_azs
   tags               = var.tags
   name               = var.name
+
+  manage_default_security_group = true
 }
 
 # module creates ecs service with container

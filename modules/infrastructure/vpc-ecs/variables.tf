@@ -17,3 +17,9 @@ variable "ecs_vpc_region_azs" {
   description = "List of Availability Zones for ECS VPC creation. e.g.: [\"apne1-az1\", \"apne1-az2\"]. If defaulted, two of the default 'aws_availability_zones' datasource will be taken"
   default     = []
 }
+
+variable "manage_default_security_group" {
+  type        = bool
+  description = "Whether to manage default security group of VPC"
+  default     = false
+}
