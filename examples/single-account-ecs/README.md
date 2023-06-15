@@ -17,17 +17,15 @@ provider "aws" {
 
 module "deepfence-cloud-scanner_example_single-account" {
   source                        = "deepfence/cloud-scanner/aws//examples/single-account-ecs"
-  version                       = "0.1.0"
+  version                       = "0.3.0"
   mgmt-console-url              = "<Console URL> eg. XXX.XXX.XX.XXX"
   mgmt-console-port             = "443"
   deepfence-key                 = "<Deepfence-key> eg. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
   name                          = "deepfence-cloud-scanner"
+  image                         = "quay.io/deepfenceio/cloud-scanner:1.5.0"
+  region                        = "<AWS-REGION>; eg. us-east-1"
+  ecs_vpc_region_azs            = ["us-east-1a"]
 }
-```
-And create a .tfvars file containing:
-
-```bash
-image  = "quay.io/deepfenceio/cloud-scanner:latest"
 ```
 
 To run this example you need have your [aws account profile configured in CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) and to execute:
