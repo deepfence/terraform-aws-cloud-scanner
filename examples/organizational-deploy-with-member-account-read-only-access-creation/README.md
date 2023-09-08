@@ -73,14 +73,14 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
     aws.member = aws.member
    }
    source                        = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-read-only-access-creation"
-   version                       = "0.1.0"
+   version                       = "0.3.0"
    CCS_member_account_id         = "${local.CCS_member_account_id}"
    name                          = var.name
    tags                          = var.tags
    mgmt-console-url              = "<Console URL> eg. XXX.XXX.XX.XXX"
    mgmt-console-port             = "443"
    deepfence-key                 = "<Deepfence-key> eg. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-   image                         = "quay.io/deepfenceio/cloud-scanner:latest"
+   image                         = "quay.io/deepfenceio/cloud-scanner:2.0.0"
    multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX,XXXXXXXXXXXX,XXXXXXXXXXXX"
 }
 ```
