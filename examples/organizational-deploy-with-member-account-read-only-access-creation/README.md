@@ -14,7 +14,7 @@ Setup is as follows-
 
 ## Prerequisites
 
-1. Management account will be used to assume access in required member account for creating roles and to deploy the scanner in an ECS task. In each member account, there should be trust policy for -[`OrganizationAccountAccessRole`](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html) role to be accessed by management account. Also, "assume policy" should be there in management account to assume role in member accounts.
+1. Organization's root account will be used to assume access in required member account for creating roles and to deploy the scanner in an ECS task. In each member account, there should be trust policy for -[`OrganizationAccountAccessRole`](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html) role to be accessed by root account. Also, "assume policy" should be there in root account to assume role in member accounts.
 
      * When a member account is created within an organization, AWS will create an `OrganizationAccountAccessRole` [for account management](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html) in member account. 
      * However, when the account is invited into the organization, it's required to [create the role manually](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html#orgs_manage_accounts_create-cross-account-role)
