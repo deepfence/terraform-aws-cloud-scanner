@@ -57,15 +57,15 @@ data "aws_iam_policy_document" "enable_assume_secure_for_cloud_role" {
 
 # importing managed policy
 
-data "aws_iam_policy" "ReadOnlyAccess" {
-  arn = "arn:aws:iam::aws:policy/ReadOnlyAccess" 
+data "aws_iam_policy" "SecurityAudit" {
+  arn = "arn:aws:iam::aws:policy/SecurityAudit"
 }
 
 # policy attachment
 
 resource "aws_iam_role_policy_attachment" "ecs-task-role-policy-attachment" {
   role       = aws_iam_role.ccs_mgmt_acc_role[0].id
-  policy_arn = data.aws_iam_policy.ReadOnlyAccess.arn 
+  policy_arn = data.aws_iam_policy.SecurityAudit.arn
 }
 
 # -----------------------------------------------------------------

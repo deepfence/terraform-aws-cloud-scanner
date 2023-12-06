@@ -49,9 +49,9 @@ resource "aws_iam_role_policy" "mem_acc_assume_role" {
 
 # importing managed policy
 
-data "aws_iam_policy" "ReadOnlyAccess" {
+data "aws_iam_policy" "SecurityAudit" {
   provider = aws.member
-  arn      = "arn:aws:iam::aws:policy/ReadOnlyAccess" 
+  arn      = "arn:aws:iam::aws:policy/SecurityAudit"
 }
 
 
@@ -60,5 +60,5 @@ data "aws_iam_policy" "ReadOnlyAccess" {
 resource "aws_iam_role_policy_attachment" "ecs-task-role-policy-attachment" {
   provider   = aws.member
   role       = aws_iam_role.ccs_ecs_task_role.id
-  policy_arn = data.aws_iam_policy.ReadOnlyAccess.arn
+  policy_arn = data.aws_iam_policy.SecurityAudit.arn
 }
