@@ -80,8 +80,8 @@ EOF
 
 # importing managed policy
 
-data "aws_iam_policy" "ReadOnlyAccess" {
-  arn = "arn:aws:iam::aws:policy/ReadOnlyAccess" 
+data "aws_iam_policy" "SecurityAudit" {
+  arn = "arn:aws:iam::aws:policy/SecurityAudit"
 }
 
 
@@ -90,6 +90,6 @@ data "aws_iam_policy" "ReadOnlyAccess" {
 resource "aws_iam_role_policy_attachment" "ecs-task-role-policy-attachment" {
   count      = var.is_organizational ? 0 : 1
   role       = local.ecs_task_role_id
-  policy_arn = data.aws_iam_policy.ReadOnlyAccess.arn
+  policy_arn = data.aws_iam_policy.SecurityAudit.arn
 }
 
