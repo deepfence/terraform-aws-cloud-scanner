@@ -41,7 +41,7 @@ module "deepfence-cloud-scanner_example_single-account" {
   # List of VPC Subnet IDs (If use_existing_vpc is set to true)
   existing_vpc_subnet_ids       = []
   tags = {
-    name = "deepfence-cloud-scanner"
+    product = "deepfence-cloud-scanner"
   }
   # AWS region: Example: us-east-1
   region                        = "us-east-1"

@@ -12,7 +12,6 @@ module "resource_group" {
 # module creates vpc and ecs cluster
 
 module "vpc-ecs" {
-  count     = var.use_existing_vpc ? 0 : 1
   providers = {
     aws = aws.member
   }

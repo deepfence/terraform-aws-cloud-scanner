@@ -50,7 +50,7 @@ variable "tags" {
   type        = map(string)
   description = "Default tag for resource"
   default = {
-    "product" = "deepfence-cloud-scanner"
+    product = "deepfence-cloud-scanner"
   }
 }
 
@@ -97,9 +97,6 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
   existing_vpc_id               = ""
   # List of VPC Subnet IDs (If use_existing_vpc is set to true)
   existing_vpc_subnet_ids       = []
-  # AWS region: Example: us-east-1
-  region                        = "us-east-1"
-  ecs_vpc_region_azs            = ["us-east-1a"]
   multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX,XXXXXXXXXXXX,XXXXXXXXXXXX"
 }
 ```

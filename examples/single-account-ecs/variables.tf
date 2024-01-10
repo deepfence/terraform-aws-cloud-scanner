@@ -10,7 +10,7 @@ variable "tags" {
   type        = map(string)
   description = "Default tag for resource"
   default     = {
-    "product" = "deepfence-cloud-scanner"
+    product = "deepfence-cloud-scanner"
   }
 }
 
