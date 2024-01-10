@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "ccs_mgmt_acc_role_trusted" {
   statement {
     effect = "Allow"
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = [
         data.aws_iam_role.ecs_task_role.arn
       ]
@@ -43,7 +43,7 @@ resource "aws_iam_role_policy" "enable_assume_ccs_mgmt_acc_role" {
 
 data "aws_iam_policy_document" "enable_assume_secure_for_cloud_role" {
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = [
       "sts:AssumeRole"
     ]
@@ -84,7 +84,7 @@ resource "aws_iam_role_policy" "mem_acc_assume_role" {
 
 data "aws_iam_policy_document" "mem_acc_assume_role" {
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = [
       "sts:AssumeRole",
     ]
