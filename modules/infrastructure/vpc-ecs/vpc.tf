@@ -5,8 +5,9 @@ data "aws_availability_zones" "zones" {
 
 # https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest
 module "vpc" {
+  count   = var.use_existing_vpc ? 0 : 1
   source  = "terraform-aws-modules/vpc/aws"
-  version = ">=3.14.0"
+  version = ">=5.0.0"
   name    = "${var.name}-vpc"
 
   cidr = "10.0.0.0/16"
@@ -28,18 +29,22 @@ module "vpc" {
   tags = var.tags
 
   manage_default_security_group = var.manage_default_security_group
-  default_security_group_egress = [{
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = "0.0.0.0/0"
-  }]
-  default_security_group_ingress = [{
-    from_port = 0
-    to_port   = 0
-    protocol  = "-1"
-    self      = true
-  }]
+  default_security_group_egress = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]
+  default_security_group_ingress = [
+    {
+      from_port = 0
+      to_port   = 0
+      protocol  = "-1"
+      self      = true
+    }
+  ]
   default_security_group_name = "${var.name}-sg"
   default_security_group_tags = var.tags
 }

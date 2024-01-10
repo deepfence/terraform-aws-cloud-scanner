@@ -8,7 +8,7 @@ variable "tags" {
   type        = map(string)
   description = "Default tag for resource"
   default = {
-    "product" = "{{data["name"]}}"
+    product = "{{data["name"]}}"
   }
 }
 
@@ -32,13 +32,29 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
     aws.member = aws.member
   }
   source                        = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-read-only-access-creation"
-  version                       = "0.3.0"
+  version                       = "0.4.0"
   CCS_member_account_id         = "${local.CCS_member_account_id}"
   name                          = var.name
   tags                          = var.tags
+  # mgmt-console-url: deepfence.customer.com or 22.33.44.55
   mgmt-console-url              = "{{data["management_console_url"]}}"
   mgmt-console-port             = "443"
   deepfence-key                 = "{{data["deepfence_key"]}}"
-  image                         = "quay.io/deepfenceio/cloud-scanner:latest"
+  image                         = "quay.io/deepfenceio/cloud-scanner:2.1.0"
+  # Task CPU Units (Default: 8 vCPU)
+  cpu                           = "8192"
+  # Task Memory (Default: 16 GB)
+  memory                        = "16384"
+  # Task Ephemeral Storage (Default: 100 GB)
+  ephemeral_storage             = "100"
+  # Task role: Must be either arn:aws:iam::aws:policy/SecurityAudit or arn:aws:iam::aws:policy/ReadOnlyAccess
+  task_role                     = "arn:aws:iam::aws:policy/SecurityAudit"
+  debug_logs                    = false
+  # Use existing VPC (Optional)
+  use_existing_vpc              = false
+  # VPC ID (If use_existing_vpc is set to true)
+  existing_vpc_id               = ""
+  # List of VPC Subnet IDs (If use_existing_vpc is set to true)
+  existing_vpc_subnet_ids       = []
   multiple-acc-ids              = "{{data["selected_member_accounts"]}}"
 }

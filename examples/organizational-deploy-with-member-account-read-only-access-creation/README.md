@@ -27,12 +27,12 @@ Setup is as follows-
 1. Create a folder in your local system. Download organizational deployment helper from the latest release.
 ```bash
 # https://github.com/deepfence/terraform-aws-cloud-scanner/releases/latest
-wget "https://github.com/deepfence/terraform-aws-cloud-scanner/releases/download/v0.3.0/organization_deployment_helper-v0.3.0-linux-amd64.tar.gz"
-tar -xzf organization_deployment_helper-v0.3.0-linux-amd64.tar.gz
+wget "https://github.com/deepfence/terraform-aws-cloud-scanner/releases/download/v0.4.0/organization_deployment_helper-v0.4.0-linux-amd64.tar.gz"
+tar -xzf organization_deployment_helper-v0.4.0-linux-amd64.tar.gz
 chmod +x organization_deployment_helper
 
-wget "https://raw.githubusercontent.com/deepfence/terraform-aws-cloud-scanner/v0.3.0/examples/organizational-deploy-with-member-account-read-only-access-creation/member-account-access-creation-files/readonlyaccess.tf.j2"
-wget "https://raw.githubusercontent.com/deepfence/terraform-aws-cloud-scanner/v0.3.0/examples/organizational-deploy-with-member-account-read-only-access-creation/member-account-access-creation-files/main.tf.j2"
+wget "https://raw.githubusercontent.com/deepfence/terraform-aws-cloud-scanner/v0.4.0/examples/organizational-deploy-with-member-account-read-only-access-creation/member-account-access-creation-files/readonlyaccess.tf.j2"
+wget "https://raw.githubusercontent.com/deepfence/terraform-aws-cloud-scanner/v0.4.0/examples/organizational-deploy-with-member-account-read-only-access-creation/member-account-access-creation-files/main.tf.j2"
 
 ./organization_deployment_helper
 ```
@@ -50,7 +50,7 @@ variable "tags" {
   type        = map(string)
   description = "Default tag for resource"
   default = {
-    "product" = "deepfence-cloud-scanner"
+    product = "deepfence-cloud-scanner"
   }
 }
 
@@ -69,19 +69,35 @@ provider "aws" {
 }
 
 module "cloud-scanner_example_organizational-deploy-with-member-account-read-only-access-creation" {
-   providers = {
+  providers = {
     aws.member = aws.member
-   }
-   source                        = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-read-only-access-creation"
-   version                       = "0.3.0"
-   CCS_member_account_id         = "${local.CCS_member_account_id}"
-   name                          = var.name
-   tags                          = var.tags
-   mgmt-console-url              = "<Console URL> eg. XXX.XXX.XX.XXX"
-   mgmt-console-port             = "443"
-   deepfence-key                 = "<Deepfence-key> eg. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-   image                         = "quay.io/deepfenceio/cloud-scanner:2.0.0"
-   multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX,XXXXXXXXXXXX,XXXXXXXXXXXX"
+  }
+  source                        = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-read-only-access-creation"
+  version                       = "0.4.0"
+  CCS_member_account_id         = "${local.CCS_member_account_id}"
+  name                          = var.name
+  tags                          = var.tags
+  # mgmt-console-url: deepfence.customer.com or 22.33.44.55
+  mgmt-console-url              = "<Console URL>"
+  mgmt-console-port             = "443"
+  deepfence-key                 = "<Deepfence key>"
+  image                         = "quay.io/deepfenceio/cloud-scanner:2.1.0"
+  # Task CPU Units (Default: 8 vCPU)
+  cpu                           = "8192"
+  # Task Memory (Default: 16 GB)
+  memory                        = "16384"
+  # Task Ephemeral Storage (Default: 100 GB)
+  ephemeral_storage             = "100"
+  # Task role: Must be either arn:aws:iam::aws:policy/SecurityAudit or arn:aws:iam::aws:policy/ReadOnlyAccess
+  task_role                     = "arn:aws:iam::aws:policy/SecurityAudit"
+  debug_logs                    = false
+  # Use existing VPC (Optional)
+  use_existing_vpc              = false
+  # VPC ID (If use_existing_vpc is set to true)
+  existing_vpc_id               = ""
+  # List of VPC Subnet IDs (If use_existing_vpc is set to true)
+  existing_vpc_subnet_ids       = []
+  multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX,XXXXXXXXXXXX,XXXXXXXXXXXX"
 }
 ```
 

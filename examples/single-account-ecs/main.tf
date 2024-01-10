@@ -14,11 +14,13 @@ module "resource_group" {
 # module creates vpc and ecs cluster
 
 module "vpc-ecs" {
-  source             = "../../modules/infrastructure/vpc-ecs"
-  ecs_vpc_region_azs = var.ecs_vpc_region_azs
-  tags               = var.tags
-  name               = var.name
-
+  source                        = "../../modules/infrastructure/vpc-ecs"
+  ecs_vpc_region_azs            = var.ecs_vpc_region_azs
+  tags                          = var.tags
+  name                          = var.name
+  use_existing_vpc              = var.use_existing_vpc
+  existing_vpc_id               = var.existing_vpc_id
+  existing_vpc_subnet_ids       = var.existing_vpc_subnet_ids
   manage_default_security_group = true
 }
 
@@ -36,6 +38,11 @@ module "ecs-service" {
   deepfence-key               = var.deepfence-key
   name                        = var.name
   image                       = var.image
+  container_cpu               = var.cpu
+  container_memory            = var.memory
+  ephemeral_storage           = var.ephemeral_storage
+  task_role                   = var.task_role
+  debug_logs                  = var.debug_logs
   multiple-acc-ids            = ""
   org-acc-id                  = ""
 }

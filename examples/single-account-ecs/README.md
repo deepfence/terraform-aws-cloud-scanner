@@ -9,21 +9,42 @@ All the required resources and workloads will be run under the same account.
 ## Usage
 Copy the code below and paste it into a .tf file on your local machine.
 
-```bash
+```terraform
 
 provider "aws" {
-  region = "<AWS-REGION>; eg. us-east-1"
+  # AWS region: Example: us-east-1
+  region = "us-east-1"
 }
 
 module "deepfence-cloud-scanner_example_single-account" {
   source                        = "deepfence/cloud-scanner/aws//examples/single-account-ecs"
-  version                       = "0.3.0"
-  mgmt-console-url              = "<Console URL> eg. XXX.XXX.XX.XXX"
-  mgmt-console-port             = "443"
-  deepfence-key                 = "<Deepfence-key> eg. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+  version                       = "0.4.0"
   name                          = "deepfence-cloud-scanner"
-  image                         = "quay.io/deepfenceio/cloud-scanner:2.0.0"
-  region                        = "<AWS-REGION>; eg. us-east-1"
+  # mgmt-console-url: deepfence.customer.com or 22.33.44.55
+  mgmt-console-url              = "<Console URL>"
+  mgmt-console-port             = "443"
+  deepfence-key                 = "<Deepfence key>"
+  image                         = "quay.io/deepfenceio/cloud-scanner:2.1.0"
+  # Task CPU Units (Default: 4 vCPU)
+  cpu                           = "4096"
+  # Task Memory (Default: 8 GB)
+  memory                        = "8192"
+  # Task Ephemeral Storage (Default: 100 GB)
+  ephemeral_storage             = "100"
+  # Task role: Must be either arn:aws:iam::aws:policy/SecurityAudit or arn:aws:iam::aws:policy/ReadOnlyAccess
+  task_role                     = "arn:aws:iam::aws:policy/SecurityAudit"
+  debug_logs                    = false
+  # Use existing VPC (Optional)
+  use_existing_vpc              = false
+  # VPC ID (If use_existing_vpc is set to true)
+  existing_vpc_id               = ""
+  # List of VPC Subnet IDs (If use_existing_vpc is set to true)
+  existing_vpc_subnet_ids       = []
+  tags = {
+    product = "deepfence-cloud-scanner"
+  }
+  # AWS region: Example: us-east-1
+  region                        = "us-east-1"
   ecs_vpc_region_azs            = ["us-east-1a"]
 }
 ```

@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "execution_assume_role" {
 # policy attachment
 
 resource "aws_iam_role_policy_attachment" "ecs_tasks_execution_role" {
-  role       = "${aws_iam_role.execution.name}"
+  role       = aws_iam_role.execution.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
@@ -78,18 +78,11 @@ resource "aws_iam_role" "deepfence-cloud-scanner-all-resource-read-only-access-r
 EOF
 }
 
-# importing managed policy
-
-data "aws_iam_policy" "SecurityAudit" {
-  arn = "arn:aws:iam::aws:policy/SecurityAudit"
-}
-
 
 # policy attachment
 
 resource "aws_iam_role_policy_attachment" "ecs-task-role-policy-attachment" {
   count      = var.is_organizational ? 0 : 1
   role       = local.ecs_task_role_id
-  policy_arn = data.aws_iam_policy.SecurityAudit.arn
+  policy_arn = var.task_role
 }
-

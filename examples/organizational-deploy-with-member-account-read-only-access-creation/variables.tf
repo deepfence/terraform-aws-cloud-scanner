@@ -18,6 +18,22 @@ variable "ecs_vpc_region_azs" {
   default     = []
 }
 
+variable "use_existing_vpc" {
+  type        = bool
+  description = "Use existing VPC"
+  default     = false
+}
+
+variable "existing_vpc_id" {
+  type        = string
+  description = "Existing VPC ID"
+}
+
+variable "existing_vpc_subnet_ids" {
+  type        = list(string)
+  description = "Existing VPC Subnet IDs"
+}
+
 # variable to store aws region
 
 variable "region" {
@@ -48,6 +64,7 @@ variable "mgmt-console-port" {
 variable "deepfence-key" {
   type        = string
   description = "deepfence-key"
+  sensitive   = true
   default     = ""
 }
 
@@ -65,7 +82,7 @@ variable "mem_acc_ecs_task_role_name" {
 
 variable "image" {
   type        = string
-  default     = "quay.io/deepfenceio/cloud-scanner:latest"
+  default     = "quay.io/deepfenceio/cloud-scanner:2.1.0"
   description = "Image of the Deepfence cloud scanner to deploy"
 }
 
@@ -89,7 +106,38 @@ variable "CCS_member_account_id" {
   description = "Member Account ID where scanner resources will be deployed"
 }
 
+variable "cpu" {
+  type        = string
+  default     = "8192"
+  description = "Task CPU Units (Default: 8 vCPU)"
+}
 
+variable "memory" {
+  type        = string
+  default     = "16384"
+  description = "Task Memory (Default: 16 GB)"
+}
 
+variable "ephemeral_storage" {
+  type        = string
+  default     = "100"
+  description = "Task Ephemeral Storage (Default: 100 GB)"
+}
 
+variable "task_role" {
+  type        = string
+  default     = "arn:aws:iam::aws:policy/SecurityAudit"
+  description = "Task Role (arn:aws:iam::aws:policy/SecurityAudit or arn:aws:iam::aws:policy/ReadOnlyAccess)"
+  validation {
+    condition = contains([
+      "arn:aws:iam::aws:policy/SecurityAudit", "arn:aws:iam::aws:policy/ReadOnlyAccess"
+    ], var.task_role)
+    error_message = "Must be either \"arn:aws:iam::aws:policy/SecurityAudit\" or \"arn:aws:iam::aws:policy/ReadOnlyAccess\"."
+  }
+}
 
+variable "debug_logs" {
+  type        = bool
+  default     = false
+  description = "Enable debug logs"
+}

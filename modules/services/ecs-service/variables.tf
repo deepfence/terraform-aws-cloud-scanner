@@ -16,7 +16,7 @@ variable "ecs_vpc_subnets_private_ids" {
 
 variable "image" {
   type        = string
-  default     = "quay.io/deepfenceio/cloud-scanner:latest"
+  default     = "quay.io/deepfenceio/cloud-scanner:2.1.0"
   description = "Image of the Deepfence cloud scanner to deploy"
 }
 
@@ -25,13 +25,35 @@ variable "image" {
 variable "container_cpu" {
   type        = string
   description = "Amount of CPU (in CPU units) to reserve for cloud-scanner task"
-  default     = "1024"
+  default     = "4096"
 }
 
 variable "container_memory" {
   type        = string
   description = "Amount of memory (in megabytes) to reserve for cloud-scanner task"
-  default     = "2048"
+  default     = "8192"
+}
+
+variable "ephemeral_storage" {
+  type        = string
+  default     = "100"
+  description = "Task Ephemeral Storage (Default: 100 GB)"
+}
+
+variable "task_role" {
+  type        = string
+  default     = "arn:aws:iam::aws:policy/SecurityAudit"
+  description = "Task Role (arn:aws:iam::aws:policy/SecurityAudit or arn:aws:iam::aws:policy/ReadOnlyAccess)"
+  validation {
+    condition     = contains(["arn:aws:iam::aws:policy/SecurityAudit", "arn:aws:iam::aws:policy/ReadOnlyAccess"], var.task_role)
+    error_message = "Must be either \"arn:aws:iam::aws:policy/SecurityAudit\" or \"arn:aws:iam::aws:policy/ReadOnlyAccess\"."
+  }
+}
+
+variable "debug_logs" {
+  type        = bool
+  default     = false
+  description = "Enable debug logs"
 }
 
 # general
@@ -81,6 +103,7 @@ variable "mgmt-console-port" {
 
 variable "deepfence-key" {
   type        = string
+  sensitive   = true
   description = "deepfence-key"
 }
 
