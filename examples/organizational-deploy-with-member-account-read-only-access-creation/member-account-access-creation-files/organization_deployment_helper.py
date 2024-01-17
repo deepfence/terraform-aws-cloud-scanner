@@ -70,6 +70,13 @@ def task_render():
     if not region:
         print("region should not be empty")
         return
+
+    task_roles = ["arn:aws:iam::aws:policy/SecurityAudit", "arn:aws:iam::aws:policy/ReadOnlyAccess"]
+    task_role = input("Enter task role: (" + " or ".join(task_roles) + ") ")
+    if task_role not in task_roles:
+        print("Task role must be one of " + ", ".join(task_roles))
+        return
+
     print("\nList of account ids and corresponding names:")
     for account in accounts:
         print(account["Id"], account["Name"])
@@ -100,7 +107,8 @@ def task_render():
             'alias': account["Name"].lower().replace(" ", "-"),
             'region': region,
             'member_account_id': account["Id"],
-            'ccs_mem_account_id': deployment_member_account
+            'ccs_mem_account_id': deployment_member_account,
+            'task_role': task_role
         })
 
     cwd = Path(".")
@@ -120,12 +128,6 @@ def task_render():
     deepfence_key = input("Enter deepfence key: ")
     if not deepfence_key:
         print("deepfence key should not be empty")
-        return
-
-    task_roles = ["arn:aws:iam::aws:policy/SecurityAudit", "arn:aws:iam::aws:policy/ReadOnlyAccess"]
-    task_role = input("Enter task role: (" + " or ".join(task_roles) + ") ")
-    if task_role not in task_roles:
-        print("Task role must be one of " + ", ".join(task_roles))
         return
 
     main_template_path = Path("main.tf.j2")
