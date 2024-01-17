@@ -47,18 +47,10 @@ resource "aws_iam_role_policy" "mem_acc_assume_role" {
   policy   = data.aws_iam_policy_document.mem_acc_assume_role.json
 }
 
-# importing managed policy
-
-data "aws_iam_policy" "SecurityAudit" {
-  provider = aws.member
-  arn      = "arn:aws:iam::aws:policy/SecurityAudit"
-}
-
-
 # policy attachment
 
 resource "aws_iam_role_policy_attachment" "ecs-task-role-policy-attachment" {
   provider   = aws.member
   role       = aws_iam_role.ccs_ecs_task_role.id
-  policy_arn = data.aws_iam_policy.SecurityAudit.arn
+  policy_arn = var.task_role
 }

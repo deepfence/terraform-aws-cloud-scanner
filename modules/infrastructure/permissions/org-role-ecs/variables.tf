@@ -28,3 +28,15 @@ variable "is_org" {
   default     = true
   description = "Name of the organizational role deployed by AWS in each member account of the organization"
 }
+
+variable "task_role" {
+  type        = string
+  default     = "arn:aws:iam::aws:policy/SecurityAudit"
+  description = "Task Role (arn:aws:iam::aws:policy/SecurityAudit or arn:aws:iam::aws:policy/ReadOnlyAccess)"
+  validation {
+    condition = contains([
+      "arn:aws:iam::aws:policy/SecurityAudit", "arn:aws:iam::aws:policy/ReadOnlyAccess"
+    ], var.task_role)
+    error_message = "Must be either \"arn:aws:iam::aws:policy/SecurityAudit\" or \"arn:aws:iam::aws:policy/ReadOnlyAccess\"."
+  }
+}

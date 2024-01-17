@@ -55,17 +55,11 @@ data "aws_iam_policy_document" "enable_assume_secure_for_cloud_role" {
 # enable mgmt account role to have read only access to all resource in mgmt account
 # ---------------------------------------------------------------------------------
 
-# importing managed policy
-
-data "aws_iam_policy" "SecurityAudit" {
-  arn = "arn:aws:iam::aws:policy/SecurityAudit"
-}
-
 # policy attachment
 
 resource "aws_iam_role_policy_attachment" "ecs-task-role-policy-attachment" {
   role       = aws_iam_role.ccs_mgmt_acc_role[0].id
-  policy_arn = data.aws_iam_policy.SecurityAudit.arn
+  policy_arn = var.task_role
 }
 
 # -----------------------------------------------------------------
