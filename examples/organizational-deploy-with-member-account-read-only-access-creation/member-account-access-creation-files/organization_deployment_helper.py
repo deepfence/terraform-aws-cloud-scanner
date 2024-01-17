@@ -122,6 +122,12 @@ def task_render():
         print("deepfence key should not be empty")
         return
 
+    task_roles = ["arn:aws:iam::aws:policy/SecurityAudit", "arn:aws:iam::aws:policy/ReadOnlyAccess"]
+    task_role = input("Enter task role: (" + " or ".join(task_roles) + ") ")
+    if task_role not in task_roles:
+        print("Task role must be one of " + ", ".join(task_roles))
+        return
+
     main_template_path = Path("main.tf.j2")
     main_template = environment.get_template(str(main_template_path))
     with open(f"{main_template_path.stem}", "w") as output_file:
@@ -131,7 +137,8 @@ def task_render():
             "deployment_member_account": deployment_member_account,
             "management_console_url": management_console_url,
             "deepfence_key": deepfence_key,
-            "selected_member_accounts": ",".join(selected_accounts)
+            "selected_member_accounts": ",".join(selected_accounts),
+            "task_role": task_role
         }))
     print("Terraform scripts generated successfully (main.tf and readonlyaccess.tf)")
     print("Now run \"terraform init && terraform apply\" to connect the AWS accounts to Deepfence Management Console")
