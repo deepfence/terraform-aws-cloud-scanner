@@ -12,7 +12,7 @@ provider "aws" {
 
 data "aws_iam_policy" "managed_policy_{{item["alias"]}}" {
   provider = aws.{{item["alias"]}}
-  arn      = "arn:aws:iam::aws:policy/SecurityAudit"
+  arn      = {{item["task_role"]}}
 }
 
 resource "aws_iam_role" "read_only_role_{{item["alias"]}}" {

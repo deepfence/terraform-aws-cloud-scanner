@@ -48,7 +48,7 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
   # Task Ephemeral Storage (Default: 100 GB)
   ephemeral_storage             = "100"
   # Task role: Must be either arn:aws:iam::aws:policy/SecurityAudit or arn:aws:iam::aws:policy/ReadOnlyAccess
-  task_role                     = "arn:aws:iam::aws:policy/SecurityAudit"
+  task_role                     = "{{data["task_role"]}}"
   debug_logs                    = false
   # Use existing VPC (Optional)
   use_existing_vpc              = false
