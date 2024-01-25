@@ -72,7 +72,7 @@ def task_render():
         return
 
     task_roles = ["arn:aws:iam::aws:policy/SecurityAudit", "arn:aws:iam::aws:policy/ReadOnlyAccess"]
-    task_role = input("Enter task role: (" + " or ".join(task_roles) + ") ")
+    task_role = input("Enter task role: (" + " or ".join(task_roles) + "): ")
     if task_role not in task_roles:
         print("Task role must be one of " + ", ".join(task_roles))
         return
@@ -117,7 +117,10 @@ def task_render():
     iam_template_path = Path("readonlyaccess.tf.j2")
     iam_template = environment.get_template(str(iam_template_path))
     with open(f"{iam_template_path.stem}", "w") as output_file:
-        output_file.write(iam_template.render(data=account_details))
+        output_file.write(iam_template.render(data={
+            "account_details": account_details,
+            "deployment_member_account": deployment_member_account,
+        }))
 
     management_console_url = input("Enter management console url (example: deepfence.customer.com or 54.54.54.54): ")
     if not management_console_url:

@@ -20,6 +20,7 @@ resource "aws_ecs_service" "service" {
   network_configuration {
     subnets          = var.ecs_vpc_subnets_private_ids
     assign_public_ip = true
+    security_groups  = aws_security_group.ecs_security_group.*.id
   }
 
   lifecycle {
@@ -55,7 +56,15 @@ resource "aws_ecs_task_definition" "task_definition" {
       command   = [
         "-mode", var.mode, "-mgmt-console-url", var.mgmt-console-url, "-mgmt-console-port", var.mgmt-console-port,
         "-deepfence-key", var.deepfence-key, "-multiple-acc-ids", var.multiple-acc-ids, "-org-acc-id", var.org-acc-id,
-        "-role-prefix", var.name, "-debug", tostring(var.debug_logs)
+        "-role-prefix", var.name, "-debug", tostring(var.debug_logs), "-cloud-audit-log-ids",
+        join(",", var.cloudtrail_trails)
+      ]
+
+      environment = [
+        {
+          "name" : "TASK_ROLE",
+          "value" : var.task_role
+        }
       ]
 
       logConfiguration = {

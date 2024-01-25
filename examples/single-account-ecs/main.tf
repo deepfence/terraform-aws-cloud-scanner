@@ -29,6 +29,7 @@ module "vpc-ecs" {
 module "ecs-service" {
   source                      = "../../modules/services/ecs-service"
   aws-region                  = var.region
+  ecs_vpc_id                  = module.vpc-ecs.ecs_vpc_id
   ecs_vpc_subnets_private_ids = module.vpc-ecs.ecs_vpc_subnets_private_ids
   ecs_cluster_name            = "${var.name}-ecs-cluster"
   tags                        = var.tags
@@ -45,6 +46,7 @@ module "ecs-service" {
   debug_logs                  = var.debug_logs
   multiple-acc-ids            = ""
   org-acc-id                  = ""
+  cloudtrail_trails           = var.cloudtrail_trails
 }
 
 

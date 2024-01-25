@@ -7,6 +7,11 @@ variable "tags" {
 
 # subnets 
 
+variable "ecs_vpc_id" {
+  type        = string
+  description = "VPC ID"
+}
+
 variable "ecs_vpc_subnets_private_ids" {
   type        = list(string)
   description = "List of VPC subnets where workload is to be deployed."
@@ -144,4 +149,9 @@ variable "organizational_config" {
       <li>`mem_acc_ecs_task_role_name` name of role created for ecs task</li>
     </ul>
   EOT
+}
+
+variable "cloudtrail_trails" {
+  type        = list(string)
+  description = "List of CloudTrail Trail ARNs (Management events with write-only or read-write). e.g.: [\"arn:aws:cloudtrail:us-east-1:123456789012:trail/aws-events\"]. If empty, a trail with management events will be automatically chosen if available."
 }
