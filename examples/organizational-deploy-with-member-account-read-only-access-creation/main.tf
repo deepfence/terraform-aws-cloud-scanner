@@ -38,6 +38,7 @@ module "ecs-service" {
 
   source                      = "../../modules/services/ecs-service"
   aws-region                  = var.region
+  ecs_vpc_id                  = module.vpc-ecs.ecs_vpc_id
   ecs_vpc_subnets_private_ids = module.vpc-ecs.ecs_vpc_subnets_private_ids
   ecs_cluster_name            = "${var.name}-ecs-cluster"
   name                        = var.name
@@ -54,6 +55,7 @@ module "ecs-service" {
   task_role                   = var.task_role
   debug_logs                  = var.debug_logs
   org-acc-id                  = data.aws_caller_identity.me.account_id
+  cloudtrail_trails           = var.cloudtrail_trails
 
   depends_on = [aws_iam_role.ccs_ecs_task_role]
 

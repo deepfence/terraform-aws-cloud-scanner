@@ -141,3 +141,8 @@ variable "debug_logs" {
   default     = false
   description = "Enable debug logs"
 }
+
+variable "cloudtrail_trails" {
+  type        = list(string)
+  description = "List of CloudTrail Trail ARNs (Management events with write-only or read-write). e.g.: [\"arn:aws:cloudtrail:us-east-1:123456789012:trail/aws-events\"]. If empty, a trail with management events will be automatically chosen if available."
+}

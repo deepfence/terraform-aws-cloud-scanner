@@ -98,6 +98,10 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
   # List of VPC Subnet IDs (If use_existing_vpc is set to true)
   existing_vpc_subnet_ids       = []
   multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX,XXXXXXXXXXXX,XXXXXXXXXXXX"
+  # Optional: To refresh the cloud resources every hour, provide CloudTrail Trail ARNs (Management events with write-only or read-write).
+  # If empty, a trail with management events will be automatically chosen if available.
+  # e.g.: ["arn:aws:cloudtrail:us-east-1:123456789012:trail/aws-events"]
+  cloudtrail_trails             = []
 }
 ```
 
