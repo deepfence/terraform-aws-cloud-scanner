@@ -81,7 +81,7 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
   mgmt-console-url              = "<Console URL>"
   mgmt-console-port             = "443"
   deepfence-key                 = "<Deepfence key>"
-  image                         = "quay.io/deepfenceio/cloud-scanner:2.1.0"
+  image                         = "quay.io/deepfenceio/cloud-scanner:2.2.0"
   # Task CPU Units (Default: 8 vCPU)
   cpu                           = "8192"
   # Task Memory (Default: 16 GB)

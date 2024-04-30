@@ -82,7 +82,7 @@ variable "mem_acc_ecs_task_role_name" {
 
 variable "image" {
   type        = string
-  default     = "quay.io/deepfenceio/cloud-scanner:2.1.0"
+  default     = "quay.io/deepfenceio/cloud-scanner:2.2.0"
   description = "Image of the Deepfence cloud scanner to deploy"
 }
 
