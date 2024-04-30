@@ -32,7 +32,7 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
     aws.member = aws.member
   }
   source                        = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-read-only-access-creation"
-  version                       = "0.4.0"
+  version                       = "0.5.0"
   CCS_member_account_id         = "${local.CCS_member_account_id}"
   name                          = var.name
   tags                          = var.tags
