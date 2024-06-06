@@ -75,7 +75,7 @@ variable "deepfence-key" {
 variable "image" {
   type        = string
   description = "Cloud Scanner image"
-  default     = "quay.io/deepfenceio/cloud-scanner:2.2.0"
+  default     = "quay.io/deepfenceio/cloud_scanner_ce:2.3.0"
 }
 
 variable "cpu" {
@@ -108,10 +108,14 @@ variable "task_role" {
   }
 }
 
-variable "debug_logs" {
-  type        = bool
-  default     = false
-  description = "Enable debug logs"
+variable "log_level" {
+  type        = string
+  default     = "info"
+  description = "Log level"
+  validation {
+    condition     = contains(["error", "warn", "info", "debug", "trace"], var.log_level)
+    error_message = "Must be one of error, warn, info, debug, trace"
+  }
 }
 
 variable "cloudtrail_trails" {

@@ -68,12 +68,6 @@ variable "deepfence-key" {
   default     = ""
 }
 
-variable "multiple-acc-ids" {
-  type        = string
-  description = "These account ids are those where scanning will be done"
-  default     = ""
-}
-
 variable "mem_acc_ecs_task_role_name" {
   type        = string
   default     = ""
@@ -82,7 +76,7 @@ variable "mem_acc_ecs_task_role_name" {
 
 variable "image" {
   type        = string
-  default     = "quay.io/deepfenceio/cloud-scanner:2.2.0"
+  default     = "quay.io/deepfenceio/cloud_scanner_ce:2.3.0"
   description = "Image of the Deepfence cloud scanner to deploy"
 }
 
@@ -92,18 +86,6 @@ variable "ccs_ecs_task_role_name" {
   type        = string
   default     = "organizational-ECSTaskRole"
   description = "Name for the ecs task role. This is only required to resolve cyclic dependency with organizational approach"
-}
-
-variable "role_in_all_account_to_be_scanned" {
-  type        = string
-  default     = "deepfence-cloud-scanner-mem-acc-read-only-access"
-  description = "Default role created by AWS for management-account users to be able to admin member accounts.<br/>https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html"
-}
-
-variable "CCS_member_account_id" {
-  type        = string
-  default     = ""
-  description = "Member Account ID where scanner resources will be deployed"
 }
 
 variable "cpu" {
@@ -136,10 +118,14 @@ variable "task_role" {
   }
 }
 
-variable "debug_logs" {
-  type        = bool
-  default     = false
-  description = "Enable debug logs"
+variable "log_level" {
+  type        = string
+  default     = "info"
+  description = "Log level"
+  validation {
+    condition     = contains(["error", "warn", "info", "debug", "trace"], var.log_level)
+    error_message = "Must be one of error, warn, info, debug, trace"
+  }
 }
 
 variable "cloudtrail_trails" {

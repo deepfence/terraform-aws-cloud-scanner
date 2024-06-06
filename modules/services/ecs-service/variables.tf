@@ -21,7 +21,7 @@ variable "ecs_vpc_subnets_private_ids" {
 
 variable "image" {
   type        = string
-  default     = "quay.io/deepfenceio/cloud-scanner:2.2.0"
+  default     = "quay.io/deepfenceio/cloud_scanner_ce:2.3.0"
   description = "Image of the Deepfence cloud scanner to deploy"
 }
 
@@ -50,15 +50,21 @@ variable "task_role" {
   default     = "arn:aws:iam::aws:policy/SecurityAudit"
   description = "Task Role (arn:aws:iam::aws:policy/SecurityAudit or arn:aws:iam::aws:policy/ReadOnlyAccess)"
   validation {
-    condition     = contains(["arn:aws:iam::aws:policy/SecurityAudit", "arn:aws:iam::aws:policy/ReadOnlyAccess"], var.task_role)
+    condition     = contains([
+      "arn:aws:iam::aws:policy/SecurityAudit", "arn:aws:iam::aws:policy/ReadOnlyAccess"
+    ], var.task_role)
     error_message = "Must be either \"arn:aws:iam::aws:policy/SecurityAudit\" or \"arn:aws:iam::aws:policy/ReadOnlyAccess\"."
   }
 }
 
-variable "debug_logs" {
-  type        = bool
-  default     = false
-  description = "Enable debug logs"
+variable "log_level" {
+  type        = string
+  default     = "info"
+  description = "Log level"
+  validation {
+    condition     = contains(["error", "warn", "info", "debug", "trace"], var.log_level)
+    error_message = "Must be one of error, warn, info, debug, trace"
+  }
 }
 
 # general
@@ -70,7 +76,7 @@ variable "name" {
 
 variable "service_desired_count" {
   description = "Number of services running in parallel"
-  default = 1
+  default     = 1
 }
 
 variable "ecs_cluster_name" {
@@ -78,7 +84,7 @@ variable "ecs_cluster_name" {
   description = "Name of a pre-existing ECS (elastic container service) cluster"
 }
 
-variable "aws-region" {
+variable "aws_region" {
   description = "the AWS region in which resources are created, you must set the availability_zones variable as well if you define this value to something other than the default"
 }
 
@@ -112,14 +118,9 @@ variable "deepfence-key" {
   description = "deepfence-key"
 }
 
-variable "multiple-acc-ids" {
+variable "account_id" {
   type        = string
-  description = "These account ids are those where scanning will be done"
-}
-
-variable "org-acc-id" {
-  type        = string
-  description = "This account id is the management account id which is there in an organizational setup"
+  description = "AWS root account id or account to scan"
 }
 
 # organisational setup
@@ -138,10 +139,10 @@ variable "ecs_task_role_name" {
 
 variable "organizational_config" {
   type = object({
-    mem_acc_ecs_task_role_name     = string
+    mem_acc_ecs_task_role_name = string
   })
   default = {
-    mem_acc_ecs_task_role_name     = null
+    mem_acc_ecs_task_role_name = null
   }
 
   description = <<-EOT

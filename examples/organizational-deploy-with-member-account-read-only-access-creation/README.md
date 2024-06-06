@@ -73,15 +73,17 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
     aws.member = aws.member
   }
   source                        = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-read-only-access-creation"
-  version                       = "0.5.0"
-  CCS_member_account_id         = "${local.CCS_member_account_id}"
+  version                       = "0.6.0"
   name                          = var.name
   tags                          = var.tags
   # mgmt-console-url: deepfence.customer.com or 22.33.44.55
   mgmt-console-url              = "<Console URL>"
   mgmt-console-port             = "443"
   deepfence-key                 = "<Deepfence key>"
-  image                         = "quay.io/deepfenceio/cloud-scanner:2.2.0"
+  # ThreatMapper
+  image                         = "quay.io/deepfenceio/cloud_scanner_ce:2.3.0"
+  # ThreatStryker
+  # image                         = "quay.io/deepfenceio/cloud_scanner:2.3.0"
   # Task CPU Units (Default: 8 vCPU)
   cpu                           = "8192"
   # Task Memory (Default: 16 GB)
@@ -90,14 +92,14 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
   ephemeral_storage             = "100"
   # Task role: Must be either arn:aws:iam::aws:policy/SecurityAudit or arn:aws:iam::aws:policy/ReadOnlyAccess
   task_role                     = "arn:aws:iam::aws:policy/SecurityAudit"
-  debug_logs                    = false
+  # Log level - options: error, warn, info, debug, trace
+  log_level                     = "info"
   # Use existing VPC (Optional)
   use_existing_vpc              = false
   # VPC ID (If use_existing_vpc is set to true)
   existing_vpc_id               = ""
   # List of VPC Subnet IDs (If use_existing_vpc is set to true)
   existing_vpc_subnet_ids       = []
-  multiple-acc-ids              = "<Member account ids where scanning will be done> ex. XXXXXXXXXXXX,XXXXXXXXXXXX,XXXXXXXXXXXX"
   # Optional: To refresh the cloud resources every hour, provide CloudTrail Trail ARNs (Management events with write-only or read-write).
   # If empty, a trail with management events will be automatically chosen if available.
   # e.g.: ["arn:aws:cloudtrail:us-east-1:123456789012:trail/aws-events"]
@@ -150,7 +152,6 @@ See inputs summary for more optional configuration.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_CCS_member_account_id"></a> [CCS\_member\_account\_id](#input\_CCS\_member\_account\_id) | Member Account ID where scanner resources will be deployed | `string` | `""` | no |
 | <a name="input_ccs_ecs_task_role_name"></a> [ccs\_ecs\_task\_role\_name](#input\_ccs\_ecs\_task\_role\_name) | Name for the ecs task role. This is only required to resolve cyclic dependency with organizational approach | `string` | `"organizational-ECSTaskRole"` | no |
 | <a name="input_deepfence-key"></a> [deepfence-key](#input\_deepfence-key) | deepfence-key | `string` | `""` | no |
 | <a name="input_ecs_vpc_region_azs"></a> [ecs\_vpc\_region\_azs](#input\_ecs\_vpc\_region\_azs) | List of Availability Zones for ECS VPC creation. e.g.: ["apne1-az1", "apne1-az2"]. If defaulted, two of the default 'aws\_availability\_zones' datasource will be taken | `list(string)` | `[]` | no |
@@ -160,9 +161,7 @@ See inputs summary for more optional configuration.
 | <a name="input_mode"></a> [mode](#input\_mode) | mode | `string` | `"service"` | no |
 | <a name="input_multiple-acc-ids"></a> [multiple-acc-ids](#input\_multiple-acc-ids) | These account ids are those where scanning will be done | `string` | `""` | no |
 | <a name="input_name"></a> [name](#input\_name) | Prefix name for all resources | `string` | `"deepfence-cloud-scanner"` | no |
-| <a name="input_org-acc-id"></a> [org-acc-id](#input\_org-acc-id) | This account id is the management account id which is there in an organizational setup | `string` | `""` | no |
 | <a name="input_region"></a> [region](#input\_region) | the AWS region in which resources are created, you must set the availability\_zones variable as well if you define this value to something other than the default | `string` | `"us-east-1"` | no |
-| <a name="input_role_in_all_account_to_be_scanned"></a> [role\_in\_all\_account\_to\_be\_scanned](#input\_role\_in\_all\_account\_to\_be\_scanned) | Default role created by AWS for management-account users to be able to admin member accounts.<br/>https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html | `string` | `"deepfence-cloud-scanner-mem-acc-read-only-access"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Default tag for resource | `map(string)` | <pre>{<br>  "product": "deepfence-cloud-scanner"<br>}</pre> | no |
 
 ## Outputs

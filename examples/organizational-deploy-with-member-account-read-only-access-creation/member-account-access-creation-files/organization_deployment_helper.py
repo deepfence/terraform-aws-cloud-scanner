@@ -120,6 +120,7 @@ def task_render():
         output_file.write(iam_template.render(data={
             "account_details": account_details,
             "deployment_member_account": deployment_member_account,
+            "task_role": task_role
         }))
 
     management_console_url = input("Enter management console url (example: deepfence.customer.com or 54.54.54.54): ")
@@ -142,7 +143,6 @@ def task_render():
             "deployment_member_account": deployment_member_account,
             "management_console_url": management_console_url,
             "deepfence_key": deepfence_key,
-            "selected_member_accounts": ",".join(selected_accounts),
             "task_role": task_role
         }))
     print("Terraform scripts generated successfully (main.tf and readonlyaccess.tf)")

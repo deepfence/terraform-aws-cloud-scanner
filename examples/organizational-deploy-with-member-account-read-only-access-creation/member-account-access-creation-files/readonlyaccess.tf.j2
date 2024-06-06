@@ -17,7 +17,7 @@ data "aws_iam_policy" "managed_policy_{{item["alias"]}}" {
 
 resource "aws_iam_role" "read_only_role_{{item["alias"]}}" {
   provider           = aws.{{item["alias"]}}
-  name               = "${var.name}-mem-acc-read-only-access"
+  name               = var.name
   assume_role_policy = data.aws_iam_policy_document.assume_policy_{{item["alias"]}}.json
   tags               = var.tags
   depends_on = [
@@ -53,12 +53,17 @@ resource "aws_iam_role_policy_attachment" "policy_attachment_{{item["alias"]}}" 
 
 data "aws_iam_policy" "managed_policy_org_account" {
   provider = aws
-  arn      = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  arn      = "{{data["task_role"]}}"
+}
+
+data "aws_iam_policy" "managed_policy_org_read" {
+  provider = aws
+  arn      = "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess"
 }
 
 resource "aws_iam_role" "read_only_role_org_account" {
   provider           = aws
-  name               = "${var.name}-mem-acc-read-only-access"
+  name               = "${var.name}"
   assume_role_policy = data.aws_iam_policy_document.assume_policy_org_account.json
   tags               = var.tags
   depends_on = [
@@ -86,4 +91,10 @@ resource "aws_iam_role_policy_attachment" "policy_attachment_org_account" {
   provider   = aws
   role       = aws_iam_role.read_only_role_org_account.id
   policy_arn = data.aws_iam_policy.managed_policy_org_account.arn
+}
+
+resource "aws_iam_role_policy_attachment" "policy_attachment_org_read" {
+  provider   = aws
+  role       = aws_iam_role.read_only_role_org_account.id
+  policy_arn = data.aws_iam_policy.managed_policy_org_read.arn
 }

@@ -32,15 +32,14 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
     aws.member = aws.member
   }
   source                        = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-read-only-access-creation"
-  version                       = "0.5.0"
-  CCS_member_account_id         = "${local.CCS_member_account_id}"
+  version                       = "0.6.0"
   name                          = var.name
   tags                          = var.tags
   # mgmt-console-url: deepfence.customer.com or 22.33.44.55
   mgmt-console-url              = "{{data["management_console_url"]}}"
   mgmt-console-port             = "443"
   deepfence-key                 = "{{data["deepfence_key"]}}"
-  image                         = "quay.io/deepfenceio/cloud-scanner:2.2.0"
+  image                         = "quay.io/deepfenceio/cloud_scanner_ce:2.3.0"
   # Task CPU Units (Default: 8 vCPU)
   cpu                           = "8192"
   # Task Memory (Default: 16 GB)
@@ -49,14 +48,13 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
   ephemeral_storage             = "100"
   # Task role: Must be either arn:aws:iam::aws:policy/SecurityAudit or arn:aws:iam::aws:policy/ReadOnlyAccess
   task_role                     = "{{data["task_role"]}}"
-  debug_logs                    = false
+  log_level                     = "info"
   # Use existing VPC (Optional)
   use_existing_vpc              = false
   # VPC ID (If use_existing_vpc is set to true)
   existing_vpc_id               = ""
   # List of VPC Subnet IDs (If use_existing_vpc is set to true)
   existing_vpc_subnet_ids       = []
-  multiple-acc-ids              = "{{data["selected_member_accounts"]}}"
   # Optional: To refresh the cloud resources every hour, provide CloudTrail Trail ARNs (Management events with write-only or read-write).
   # If empty, a trail with management events will be automatically chosen if available.
   # e.g.: ["arn:aws:cloudtrail:us-east-1:123456789012:trail/aws-events"]

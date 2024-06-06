@@ -37,7 +37,7 @@ module "ecs-service" {
   }
 
   source                      = "../../modules/services/ecs-service"
-  aws-region                  = var.region
+  aws_region                  = var.region
   ecs_vpc_id                  = module.vpc-ecs.ecs_vpc_id
   ecs_vpc_subnets_private_ids = module.vpc-ecs.ecs_vpc_subnets_private_ids
   ecs_cluster_name            = "${var.name}-ecs-cluster"
@@ -47,14 +47,13 @@ module "ecs-service" {
   mgmt-console-url            = var.mgmt-console-url
   mgmt-console-port           = var.mgmt-console-port
   deepfence-key               = var.deepfence-key
-  multiple-acc-ids            = var.multiple-acc-ids
   image                       = var.image
   container_cpu               = var.cpu
   container_memory            = var.memory
   ephemeral_storage           = var.ephemeral_storage
   task_role                   = var.task_role
-  debug_logs                  = var.debug_logs
-  org-acc-id                  = data.aws_caller_identity.me.account_id
+  log_level                   = var.log_level
+  account_id                  = data.aws_caller_identity.me.account_id
   cloudtrail_trails           = var.cloudtrail_trails
 
   depends_on = [aws_iam_role.ccs_ecs_task_role]

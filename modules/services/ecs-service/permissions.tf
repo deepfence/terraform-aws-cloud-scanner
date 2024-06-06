@@ -59,7 +59,7 @@ data "aws_iam_role" "task_inherited" {
 
 resource "aws_iam_role" "deepfence-cloud-scanner-all-resource-read-only-access-role" {
   count              = var.is_organizational ? 0 : 1
-  name               = "${var.name}-all-resource-read-only-access-role"
+  name               = var.name
   tags               = var.tags
   assume_role_policy = <<EOF
 {
