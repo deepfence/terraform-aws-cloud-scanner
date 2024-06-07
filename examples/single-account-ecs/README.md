@@ -18,13 +18,16 @@ provider "aws" {
 
 module "deepfence-cloud-scanner_example_single-account" {
   source                        = "deepfence/cloud-scanner/aws//examples/single-account-ecs"
-  version                       = "0.5.0"
+  version                       = "0.6.0"
   name                          = "deepfence-cloud-scanner"
   # mgmt-console-url: deepfence.customer.com or 22.33.44.55
   mgmt-console-url              = "<Console URL>"
   mgmt-console-port             = "443"
   deepfence-key                 = "<Deepfence key>"
-  image                         = "quay.io/deepfenceio/cloud-scanner:2.2.0"
+  # ThreatMapper
+  image                         = "quay.io/deepfenceio/cloud_scanner_ce:2.3.0"
+  # ThreatStryker
+  # image                         = "quay.io/deepfenceio/cloud_scanner:2.3.0"
   # Task CPU Units (Default: 4 vCPU)
   cpu                           = "4096"
   # Task Memory (Default: 8 GB)
@@ -33,7 +36,8 @@ module "deepfence-cloud-scanner_example_single-account" {
   ephemeral_storage             = "100"
   # Task role: Must be either arn:aws:iam::aws:policy/SecurityAudit or arn:aws:iam::aws:policy/ReadOnlyAccess
   task_role                     = "arn:aws:iam::aws:policy/SecurityAudit"
-  debug_logs                    = false
+  # Log level - options: error, warn, info, debug, trace
+  log_level                     = "info"
   # Use existing VPC (Optional)
   use_existing_vpc              = false
   # VPC ID (If use_existing_vpc is set to true)

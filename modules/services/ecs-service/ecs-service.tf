@@ -53,18 +53,23 @@ resource "aws_ecs_task_definition" "task_definition" {
       essential = true
       tags      = var.tags
       name      = var.name
-      command   = [
-        "-mode", var.mode, "-mgmt-console-url", var.mgmt-console-url, "-mgmt-console-port", var.mgmt-console-port,
-        "-deepfence-key", var.deepfence-key, "-multiple-acc-ids", var.multiple-acc-ids, "-org-acc-id", var.org-acc-id,
-        "-role-prefix", var.name, "-debug", tostring(var.debug_logs), "-cloud-audit-log-ids",
-        join(",", var.cloudtrail_trails)
-      ]
 
       environment = [
-        {
-          "name" : "TASK_ROLE",
-          "value" : var.task_role
-        }
+        { "name" : "MGMT_CONSOLE_URL", "value" : var.mgmt-console-url },
+        { "name" : "MGMT_CONSOLE_PORT", "value" : var.mgmt-console-port },
+        { "name" : "DEEPFENCE_KEY", "value" : var.deepfence-key },
+        { "name" : "CLOUD_PROVIDER", "value" : "aws" },
+        { "name" : "CLOUD_REGION", "value" : var.aws_region },
+        { "name" : "CLOUD_ACCOUNT_ID", "value" : var.account_id },
+        { "name" : "ORGANIZATION_DEPLOYMENT", "value" : tostring(var.is_organizational) },
+        { "name" : "ROLE_NAME", "value" : var.name },
+        { "name" : "AWS_CREDENTIAL_SOURCE", "value" : "EcsContainer" },
+        { "name" : "CLOUD_AUDIT_LOG_IDS", "value" : join(",", var.cloudtrail_trails) },
+        { "name" : "HTTP_SERVER_REQUIRED", "value" : "false" },
+        { "name" : "SUCCESS_SIGNAL_URL", "value" : "" },
+        { "name" : "LOG_LEVEL", "value" : var.log_level },
+        { "name" : "SCAN_INACTIVE_THRESHOLD", "value" : "21600" },
+        { "name" : "CLOUD_SCANNER_POLICY", "value" : var.task_role },
       ]
 
       logConfiguration = {

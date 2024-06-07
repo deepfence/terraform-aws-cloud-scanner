@@ -24,7 +24,7 @@ Deepfence workload will be deployed in the same account where user's resources w
 
 Please check out below to implement the same:
 
-[`./examples/single-account-ecs`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/single-account-ecs)
+- [`./examples/single-account-ecs`](https://github.com/deepfence/terraform-aws-cloud-scanner/tree/main/examples/single-account-ecs)
 
 ### - Organizational
 
