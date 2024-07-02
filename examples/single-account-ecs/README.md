@@ -24,6 +24,8 @@ module "deepfence-cloud-scanner_example_single-account" {
   mgmt-console-url              = "<Console URL>"
   mgmt-console-port             = "443"
   deepfence-key                 = "<Deepfence key>"
+  # AWS Account Name (Optional, for easy identification)
+  account_name                  = ""
   # ThreatMapper
   image                         = "quay.io/deepfenceio/cloud_scanner_ce:2.3.0"
   # ThreatStryker

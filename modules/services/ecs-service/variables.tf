@@ -50,7 +50,7 @@ variable "task_role" {
   default     = "arn:aws:iam::aws:policy/SecurityAudit"
   description = "Task Role (arn:aws:iam::aws:policy/SecurityAudit or arn:aws:iam::aws:policy/ReadOnlyAccess)"
   validation {
-    condition     = contains([
+    condition = contains([
       "arn:aws:iam::aws:policy/SecurityAudit", "arn:aws:iam::aws:policy/ReadOnlyAccess"
     ], var.task_role)
     error_message = "Must be either \"arn:aws:iam::aws:policy/SecurityAudit\" or \"arn:aws:iam::aws:policy/ReadOnlyAccess\"."
@@ -121,6 +121,12 @@ variable "deepfence-key" {
 variable "account_id" {
   type        = string
   description = "AWS root account id or account to scan"
+}
+
+variable "account_name" {
+  type        = string
+  description = "AWS account name"
+  default     = ""
 }
 
 # organisational setup

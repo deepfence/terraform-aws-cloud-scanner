@@ -45,6 +45,7 @@ module "ecs-service" {
   task_role                   = var.task_role
   log_level                   = var.log_level
   account_id                  = data.aws_caller_identity.me.account_id
+  account_name                = var.account_name
   cloudtrail_trails           = var.cloudtrail_trails
 }
 

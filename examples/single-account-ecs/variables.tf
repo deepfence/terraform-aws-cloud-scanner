@@ -14,6 +14,12 @@ variable "tags" {
   }
 }
 
+variable "account_name" {
+  type        = string
+  description = "AWS account name"
+  default     = ""
+}
+
 # variable to store availability Zones
 
 variable "ecs_vpc_region_azs" {
