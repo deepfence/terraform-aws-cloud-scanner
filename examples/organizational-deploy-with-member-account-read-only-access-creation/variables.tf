@@ -10,6 +10,11 @@ variable "tags" {
   description = "Default tag for resource"
 }
 
+variable "deployed_account_id" {
+  type        = string
+  description = "AWS account id where cloud scanner is deployed"
+}
+
 # variable to store availability Zones
 
 variable "ecs_vpc_region_azs" {

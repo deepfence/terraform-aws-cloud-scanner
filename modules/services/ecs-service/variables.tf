@@ -123,6 +123,11 @@ variable "account_id" {
   description = "AWS root account id or account to scan"
 }
 
+variable "deployed_account_id" {
+  type        = string
+  description = "AWS account id where cloud scanner is deployed"
+}
+
 variable "account_name" {
   type        = string
   description = "AWS account name"

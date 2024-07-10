@@ -61,6 +61,7 @@ resource "aws_ecs_task_definition" "task_definition" {
         { "name" : "CLOUD_PROVIDER", "value" : "aws" },
         { "name" : "CLOUD_REGION", "value" : var.aws_region },
         { "name" : "CLOUD_ACCOUNT_ID", "value" : var.account_id },
+        { "name" : "DEPLOYED_ACCOUNT_ID", "value" : var.deployed_account_id },
         { "name" : "CLOUD_ACCOUNT_NAME", "value" : var.account_name },
         { "name" : "CLOUD_ORGANIZATION_ID", "value" : var.account_id },
         { "name" : "ORGANIZATION_DEPLOYMENT", "value" : tostring(var.is_organizational) },

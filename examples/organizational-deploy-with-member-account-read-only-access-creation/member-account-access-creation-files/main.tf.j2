@@ -49,6 +49,7 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
   # Task role: Must be either arn:aws:iam::aws:policy/SecurityAudit or arn:aws:iam::aws:policy/ReadOnlyAccess
   task_role                     = "{{data["task_role"]}}"
   log_level                     = "info"
+  deployed_account_id           = local.CCS_member_account_id
   # Use existing VPC (Optional)
   use_existing_vpc              = false
   # VPC ID (If use_existing_vpc is set to true)

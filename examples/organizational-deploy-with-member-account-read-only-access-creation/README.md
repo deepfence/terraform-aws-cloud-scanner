@@ -94,6 +94,7 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
   task_role                     = "arn:aws:iam::aws:policy/SecurityAudit"
   # Log level - options: error, warn, info, debug, trace
   log_level                     = "info"
+  deployed_account_id           = local.CCS_member_account_id
   # Use existing VPC (Optional)
   use_existing_vpc              = false
   # VPC ID (If use_existing_vpc is set to true)
