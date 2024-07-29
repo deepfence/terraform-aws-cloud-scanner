@@ -27,12 +27,12 @@ Setup is as follows-
 1. Create a folder in your local system. Download organizational deployment helper from the latest release.
 ```bash
 # https://github.com/deepfence/terraform-aws-cloud-scanner/releases/latest
-wget "https://github.com/deepfence/terraform-aws-cloud-scanner/releases/download/v0.5.0/organization_deployment_helper-v0.5.0-linux-amd64.tar.gz"
-tar -xzf organization_deployment_helper-v0.5.0-linux-amd64.tar.gz
+wget "https://github.com/deepfence/terraform-aws-cloud-scanner/releases/download/v0.6.0/organization_deployment_helper-v0.6.0-linux-amd64.tar.gz"
+tar -xzf organization_deployment_helper-v0.6.0-linux-amd64.tar.gz
 chmod +x organization_deployment_helper
 
-wget "https://raw.githubusercontent.com/deepfence/terraform-aws-cloud-scanner/v0.5.0/examples/organizational-deploy-with-member-account-read-only-access-creation/member-account-access-creation-files/readonlyaccess.tf.j2"
-wget "https://raw.githubusercontent.com/deepfence/terraform-aws-cloud-scanner/v0.5.0/examples/organizational-deploy-with-member-account-read-only-access-creation/member-account-access-creation-files/main.tf.j2"
+wget "https://raw.githubusercontent.com/deepfence/terraform-aws-cloud-scanner/v0.6.0/examples/organizational-deploy-with-member-account-read-only-access-creation/member-account-access-creation-files/readonlyaccess.tf.j2"
+wget "https://raw.githubusercontent.com/deepfence/terraform-aws-cloud-scanner/v0.6.0/examples/organizational-deploy-with-member-account-read-only-access-creation/member-account-access-creation-files/main.tf.j2"
 
 ./organization_deployment_helper
 ```
