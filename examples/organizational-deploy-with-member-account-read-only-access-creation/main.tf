@@ -56,6 +56,7 @@ module "ecs-service" {
   account_id                  = data.aws_caller_identity.me.account_id
   deployed_account_id         = var.deployed_account_id
   account_name                = ""
+  enable_cloudtrail_trails    = var.enable_cloudtrail_trails
   cloudtrail_trails           = var.cloudtrail_trails
 
   depends_on = [aws_iam_role.ccs_ecs_task_role]

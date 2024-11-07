@@ -55,6 +55,7 @@ module "deepfence-cloud-scanner_example_single-account" {
   # Optional: To refresh the cloud resources every hour, provide CloudTrail Trail ARNs (Management events with write-only or read-write).
   # If empty, a trail with management events will be automatically chosen if available.
   # e.g.: ["arn:aws:cloudtrail:us-east-1:123456789012:trail/aws-events"]
+  enable_cloudtrail_trails      = true
   cloudtrail_trails             = []
 }
 ```
