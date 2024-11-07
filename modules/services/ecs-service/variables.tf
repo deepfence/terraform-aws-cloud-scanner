@@ -163,6 +163,12 @@ variable "organizational_config" {
   EOT
 }
 
+variable "enable_cloudtrail_trails" {
+  type        = bool
+  default     = false
+  description = "Enable CloudTrail based updates"
+}
+
 variable "cloudtrail_trails" {
   type        = list(string)
   description = "List of CloudTrail Trail ARNs (Management events with write-only or read-write). e.g.: [\"arn:aws:cloudtrail:us-east-1:123456789012:trail/aws-events\"]. If empty, a trail with management events will be automatically chosen if available."

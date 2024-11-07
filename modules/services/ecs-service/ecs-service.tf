@@ -67,6 +67,7 @@ resource "aws_ecs_task_definition" "task_definition" {
         { "name" : "ORGANIZATION_DEPLOYMENT", "value" : tostring(var.is_organizational) },
         { "name" : "ROLE_NAME", "value" : var.name },
         { "name" : "AWS_CREDENTIAL_SOURCE", "value" : "EcsContainer" },
+        { "name" : "CLOUD_AUDIT_LOGS_ENABLED", "value" : tostring(var.enable_cloudtrail_trails) },
         { "name" : "CLOUD_AUDIT_LOG_IDS", "value" : join(",", var.cloudtrail_trails) },
         { "name" : "HTTP_SERVER_REQUIRED", "value" : "false" },
         { "name" : "SUCCESS_SIGNAL_URL", "value" : "" },
