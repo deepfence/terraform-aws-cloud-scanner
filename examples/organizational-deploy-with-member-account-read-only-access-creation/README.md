@@ -73,7 +73,7 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
     aws.member = aws.member
   }
   source                        = "deepfence/cloud-scanner/aws//examples/organizational-deploy-with-member-account-read-only-access-creation"
-  version                       = "0.9.0"
+  version                       = "0.9.1"
   name                          = var.name
   tags                          = var.tags
   # mgmt-console-url: deepfence.customer.com or 22.33.44.55
@@ -81,9 +81,9 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
   mgmt-console-port             = "443"
   deepfence-key                 = "<Deepfence key>"
   # ThreatMapper
-  image                         = "quay.io/deepfenceio/cloud_scanner_ce:2.5.0"
+  image                         = "quay.io/deepfenceio/cloud_scanner_ce:2.5.1"
   # ThreatStryker
-  # image                         = "quay.io/deepfenceio/cloud_scanner:2.5.0"
+  # image                         = "quay.io/deepfenceio/cloud_scanner:2.5.1"
   # Task CPU Units (Default: 8 vCPU)
   cpu                           = "8192"
   # Task Memory (Default: 16 GB)

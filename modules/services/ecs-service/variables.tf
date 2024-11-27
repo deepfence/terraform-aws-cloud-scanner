@@ -21,7 +21,7 @@ variable "ecs_vpc_subnets_private_ids" {
 
 variable "image" {
   type        = string
-  default     = "quay.io/deepfenceio/cloud_scanner_ce:2.5.0"
+  default     = "quay.io/deepfenceio/cloud_scanner_ce:2.5.1"
   description = "Image of the Deepfence cloud scanner to deploy"
 }
 

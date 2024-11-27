@@ -18,7 +18,7 @@ provider "aws" {
 
 module "deepfence-cloud-scanner_example_single-account" {
   source                        = "deepfence/cloud-scanner/aws//examples/single-account-ecs"
-  version                       = "0.9.0"
+  version                       = "0.9.1"
   name                          = "deepfence-cloud-scanner"
   # mgmt-console-url: deepfence.customer.com or 22.33.44.55
   mgmt-console-url              = "<Console URL>"
@@ -27,9 +27,9 @@ module "deepfence-cloud-scanner_example_single-account" {
   # AWS Account Name (Optional, for easy identification)
   account_name                  = ""
   # ThreatMapper
-  image                         = "quay.io/deepfenceio/cloud_scanner_ce:2.5.0"
+  image                         = "quay.io/deepfenceio/cloud_scanner_ce:2.5.1"
   # ThreatStryker
-  # image                         = "quay.io/deepfenceio/cloud_scanner:2.5.0"
+  # image                         = "quay.io/deepfenceio/cloud_scanner:2.5.1"
   # Task CPU Units (Default: 4 vCPU)
   cpu                           = "4096"
   # Task Memory (Default: 8 GB)
