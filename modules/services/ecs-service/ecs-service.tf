@@ -60,7 +60,7 @@ resource "aws_ecs_task_definition" "task_definition" {
         { "name" : "DEEPFENCE_KEY", "value" : var.deepfence-key },
         { "name" : "CLOUD_PROVIDER", "value" : "aws" },
         { "name" : "CLOUD_REGION", "value" : var.aws_region },
-        { "name" : "DISABLED_CLOUD_REGIONS", "value" : join(",", var.disabled_cloud_regions) },
+        { "name" : "ENABLED_CLOUD_REGIONS", "value" : join(",", var.enabled_cloud_regions) },
         { "name" : "CLOUD_ACCOUNT_ID", "value" : var.account_id },
         { "name" : "DEPLOYED_ACCOUNT_ID", "value" : var.deployed_account_id },
         { "name" : "CLOUD_ACCOUNT_NAME", "value" : var.account_name },

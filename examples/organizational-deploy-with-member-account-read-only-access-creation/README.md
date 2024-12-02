@@ -86,7 +86,7 @@ module "cloud-scanner_example_organizational-deploy-with-member-account-read-onl
   # image                         = "quay.io/deepfenceio/cloud_scanner:2.5.1"
   # Disabled regions: List of cloud regions which should not be scanned
   # Example: ["us-east-1", "us-east-2"]
-  disabled_cloud_regions        = []
+  enabled_cloud_regions         = []
   # Task CPU Units (Default: 8 vCPU)
   cpu                           = "8192"
   # Task Memory (Default: 16 GB)

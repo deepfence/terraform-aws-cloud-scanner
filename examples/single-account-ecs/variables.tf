@@ -51,7 +51,7 @@ variable "region" {
   default     = "us-east-1"
 }
 
-variable "disabled_cloud_regions" {
+variable "enabled_cloud_regions" {
   type        = list(string)
   description = "List of cloud regions which should not be scanned"
   default     = []
