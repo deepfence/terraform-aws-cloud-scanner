@@ -41,6 +41,7 @@ module "ecs-service" {
   ecs_vpc_id                  = module.vpc-ecs.ecs_vpc_id
   ecs_vpc_subnets_private_ids = module.vpc-ecs.ecs_vpc_subnets_private_ids
   ecs_cluster_name            = "${var.name}-ecs-cluster"
+  disabled_cloud_regions      = var.disabled_cloud_regions
   name                        = var.name
   tags                        = var.tags
   mode                        = var.mode

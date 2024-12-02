@@ -118,6 +118,12 @@ variable "deepfence-key" {
   description = "deepfence-key"
 }
 
+variable "disabled_cloud_regions" {
+  type        = list(string)
+  description = "List of cloud regions which should not be scanned"
+  default     = []
+}
+
 variable "account_id" {
   type        = string
   description = "AWS root account id or account to scan"
