@@ -30,7 +30,8 @@ module "deepfence-cloud-scanner_example_single-account" {
   image                         = "quay.io/deepfenceio/cloud_scanner_ce:2.5.1"
   # ThreatStryker
   # image                         = "quay.io/deepfenceio/cloud_scanner:2.5.1"
-  # Enabled regions: List of regions which should be scanned. All other regions will be disabled.
+  # Enabled regions (Optional): List of regions which should be scanned. All other regions will be disabled.
+  # All regions enabled by default
   # Example: ["us-east-1", "us-east-2"]
   enabled_cloud_regions         = []
   # Task CPU Units (Default: 4 vCPU)
